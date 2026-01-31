@@ -8,30 +8,33 @@
 import SwiftUI
 
 struct ArcadeHomeView: View {
-    let games: [GameRoute] = [.commitSnake, .mamal]
+    let games: [GameRoute] = [.commitSnake, .DinoRun, .ComingSoon]
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 Text("SwiftUI Arcade")
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.bungeeSpiceLargeTitle)
+                    .fontWeight(.heavy)
+                    .frame(height: 50)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 30)
                     .padding(.top, 10)
-
+                
                 List(games) { game in
                     NavigationLink(value: game) {
-                        HStack(spacing: 16) {
+                        HStack(spacing: 8) {
                             Image(systemName: game.info.icon)
-                                .font(.title2)
-                                .foregroundStyle(game.info.isAvailable ? .green : .gray)
+                                .font(.bungeeTitle2)
+                                .foregroundStyle(game.info.isAvailable ? .orange : .gray)
                             
                             VStack(alignment: .leading) {
                                 Text(game.info.title)
-                                    .font(.headline)
+                                    .font(.bungeeHeadline)
+                                    .foregroundStyle(.primary.opacity(0.75))
                                 Text(game.info.note)
                                     .font(.caption)
+                                    .fontDesign(.monospaced)
                                     .foregroundStyle(.secondary)
                             }
                         }
@@ -41,8 +44,8 @@ struct ArcadeHomeView: View {
                     .disabled(!game.info.isAvailable)
                     .opacity(game.info.isAvailable ? 1 : 0.5)
                 }
-                
                 // Centralized navigation logic
+                .listStyle(.plain)
                 .navigationDestination(for: GameRoute.self) { route in
                     route.destination()
                 }

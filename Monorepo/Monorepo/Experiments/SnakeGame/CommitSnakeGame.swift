@@ -26,22 +26,30 @@ struct CommitSnakeGame: View {
                     .frame(height: 100)
                     .padding(.bottom, 20)
             }
-            
+
             // HUD: Scoreboard floats on top using ZStack alignment
-            if #available(iOS 26, *) {
-                GlassEffectContainer {
-                    HStack {
-                        Text("Commits: \(engine.snakeBody.count - 3)")
-                            .font(.headline)
-                        Spacer()
-                        Text("Level: \(engine.snakeBody.count / 5)")
-                            .font(.headline)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
+            GlassEffectContainer {
+                HStack {
+                    Text("COMMITS")
+                        .font(.bungeeHeadline)
+                        .foregroundStyle(.primary.opacity(0.75))
+                    
+                    Text("\(engine.snakeBody.count - 3)")
+                        .font(.bungeeHeadline)
+                        .foregroundStyle(Color.green)
+                    Spacer()
+                    Text("Level")
+                        .font(.bungeeHeadline)
+                        .foregroundStyle(.primary.opacity(0.75))
+                    
+                    Text("\(engine.snakeBody.count / 5)")
+                        .font(.bungeeHeadline)
+                        .foregroundStyle(Color.green)
                 }
-                .padding()
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
             }
+            .padding()
         }
         .task {
             // Check for cancellation at the start of every loop iteration

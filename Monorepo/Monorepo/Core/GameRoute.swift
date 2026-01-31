@@ -16,26 +16,28 @@ struct GameInfo {
 
 enum GameRoute: Hashable, Identifiable {
     case commitSnake
-    case mamal
+    case ComingSoon
+    case DinoRun
     
     var id: Self { self }
     
     var info: GameInfo {
         switch self {
         case .commitSnake:
-            GameInfo(
-                title: "Commit Snake",
-                note: "GitHub graph & Trackball controls",
-                icon: "point.topleft.down.curvedto.point.bottomright.up",
-                isAvailable: true
-            )
-        case .mamal:
-            GameInfo(
-                title: "Mamal Game",
-                note: "Coming soon",
-                icon: "gamecontroller",
-                isAvailable: false
-            )
+            GameInfo(title: "Commit Snake",
+                    note: "GitHub graph & Trackball controls",
+                    icon: "point.topleft.down.curvedto.point.bottomright.up",
+                    isAvailable: true)
+        case .DinoRun:
+            GameInfo(title: "Dino Run",
+                     note: "Chrome offline dinosaur jump",
+                     icon: "figure.gymnastics",
+                     isAvailable: true)
+        case .ComingSoon:
+            GameInfo(title: "Mini Game",
+                    note: "Coming soon",
+                    icon: "gamecontroller",
+                    isAvailable: false)
         }
     }
 
@@ -44,6 +46,8 @@ enum GameRoute: Hashable, Identifiable {
         destinationView()
             .navigationTitle(info.title)
             .navigationBarTitleDisplayMode(.inline)
+            .font(.bungeeSpiceTitle)
+
     }
     
     @ViewBuilder
@@ -51,7 +55,9 @@ enum GameRoute: Hashable, Identifiable {
         switch self {
         case .commitSnake:
             CommitSnakeGame()
-        case .mamal:
+        case .DinoRun:
+            DinoRunGame()
+        case .ComingSoon:
             Text("Coming Soon!")
         }
     }

@@ -15,8 +15,8 @@ struct MonorepoApp: App {
         let appearance = UINavigationBarAppearance()
         
         // Define the monospaced font with a specific size
-        let monoFont = UIFont.monospacedSystemFont(ofSize: 25, weight: .bold)
-        let monoInlineFont = UIFont.monospacedSystemFont(ofSize: 17, weight: .semibold)
+        let monoFont = UIFont(name: "BungeeSpice-Regular", size: 25) ?? .monospacedSystemFont(ofSize: 25, weight: .bold)
+        let monoInlineFont = UIFont(name: "BungeeSpice-Regular", size: 17) ?? .monospacedSystemFont(ofSize: 17, weight: .bold)
         
         // Apply to Large and Standard titles
         appearance.largeTitleTextAttributes = [.font: monoFont]
@@ -29,7 +29,7 @@ struct MonorepoApp: App {
     var body: some Scene {
         WindowGroup {
             ArcadeHomeView()
-                .fontDesign(.monospaced)
+                .font(.bungeeSpiceLargeTitle)
         }
     }
 }
