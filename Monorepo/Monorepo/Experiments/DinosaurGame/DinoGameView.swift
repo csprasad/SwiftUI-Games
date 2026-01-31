@@ -1,5 +1,5 @@
 //
-//  DinoGameView.swift
+//  DinoRunGame.swift
 //  Monorepo
 //
 //  Created by codeAlligator on 31/01/26.
@@ -33,6 +33,7 @@ struct DinoRunGame: View {
                 Spacer()
                 Text((String(format: "%.1fx", engine.speedMultiplier)))
                     .font(.bungeeSpiceBody)
+                    .foregroundStyle(.green.opacity(0.8))
                     .monospacedDigit()
             }
             .padding(.horizontal)
@@ -92,4 +93,8 @@ struct DinoRunGame: View {
         case .gameOver: return "RETRY"
         }
     }
+}
+
+#Preview {
+    DinoRunGame()
 }

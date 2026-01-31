@@ -16,13 +16,12 @@ struct GameOverView: View {
             if state == .gameOver {
                 Text("GAME OVER")
                     .font(.bungeeSpiceTitle)
-                    .foregroundStyle(.red)
                     .opacity(isVisible ? 1 : 0)
             }
             
             Text(state == .idle ? "TAP TO START" : "TAP TO RESTART")
                 .font(.bungeeHeadline)
-                .foregroundStyle(state == .idle ? .orange : .secondary)
+                .foregroundStyle(state == .idle ? .gray : .secondary)
                 .opacity(state == .idle ? (isVisible ? 1 : 0.3) : 1)
         }
         .onAppear {

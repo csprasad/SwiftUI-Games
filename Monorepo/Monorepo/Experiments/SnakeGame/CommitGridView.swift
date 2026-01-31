@@ -43,7 +43,7 @@ struct CommitSquare: View {
         if isSnake {
             return snakeColor
         } else if isFood {
-            return .red
+            return .pink
         } else {
             // Adaptive gray for the "no-activity" squares
             return colorScheme == .dark ? Color.white.opacity(0.1) : Color.black.opacity(0.05)

@@ -44,10 +44,13 @@ enum GameRoute: Hashable, Identifiable {
     @ViewBuilder
     func destination() -> some View {
         destinationView()
-            .navigationTitle(info.title)
             .navigationBarTitleDisplayMode(.inline)
-            .font(.bungeeSpiceTitle)
-
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(info.title)
+                        .font(.bungeeSpiceTitle3)
+                }
+            }
     }
     
     @ViewBuilder
