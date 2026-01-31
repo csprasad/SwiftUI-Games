@@ -22,8 +22,10 @@ Additional games in development...
 
 <table>
   <tr>
-    <td><img src="images/collections.png"/></td>
+    <td><img src="images/collections-dark.png"/></td>
     <td><img src="gifs/commitSnake.gif"/></td>
+  </tr>
+<td><img src="gifs/dinoRun.gif"/></td>
   </tr>
 </table>
 
