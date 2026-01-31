@@ -22,10 +22,9 @@ Additional games in development...
 
 <table>
   <tr>
-    <td><img src="images/collections-dark.png"/></td>
-    <td><img src="gifs/commitSnake.gif"/></td>
-  </tr>
-<td><img src="gifs/dinoRun.gif"/></td>
+    <td width="33%"><img src="images/collections-dark.png" width="100%"/></td>
+    <td width="33%"><img src="gifs/commitSnake.gif" width="100%"/></td>
+    <td width="33%"><img src="gifs/dinoRun.gif" width="100%"/></td>
   </tr>
 </table>
 
