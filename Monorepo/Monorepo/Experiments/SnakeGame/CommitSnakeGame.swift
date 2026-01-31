@@ -1,5 +1,5 @@
 //
-//  CommitSnakeGameView.swift
+//  CommitSnakeGame.swift
 //  Monorepo
 //
 //  Created by codeAlligator on 30/01/26.
@@ -63,4 +63,8 @@ struct CommitSnakeGame: View {
             }
         }
     }
+}
+
+#Preview {
+    CommitSnakeGame()
 }
