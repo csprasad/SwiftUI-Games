@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ArcadeGameRow: View {
+struct ArcadeCard: View {
     let game: GameRoute
 
     var body: some View {

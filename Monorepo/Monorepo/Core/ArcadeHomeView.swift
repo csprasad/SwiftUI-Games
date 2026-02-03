@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ArcadeHomeView: View {
-    let games: [GameRoute] = [.commitSnake, .DinoRun, .ComingSoon]
+    let games: [GameRoute] = [.commitSnake, .DinoRun, .Flappy, .ComingSoon]
     
     var body: some View {
         NavigationStack {
@@ -69,7 +69,7 @@ struct ArcadeHomeView: View {
                     VStack(spacing: 12) {
                         ForEach(games) { game in
                             NavigationLink(value: game) {
-                                ArcadeGameRow(game: game)
+                                ArcadeCard(game: game)
                             }
                             .disabled(!game.info.isAvailable)
                         }

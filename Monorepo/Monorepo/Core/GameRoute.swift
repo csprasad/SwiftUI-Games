@@ -18,6 +18,7 @@ enum GameRoute: Hashable, Identifiable {
     case commitSnake
     case ComingSoon
     case DinoRun
+    case Flappy
     
     var id: Self { self }
     
@@ -32,6 +33,11 @@ enum GameRoute: Hashable, Identifiable {
             GameInfo(title: "Dino Run",
                      note: "Chrome offline dinosaur jump",
                      icon: "figure.gymnastics",
+                     isAvailable: true)
+        case .Flappy:
+            GameInfo(title: "Flappy Bird",
+                     note: "Flappy Bird Clone",
+                     icon: "bird.fill",
                      isAvailable: true)
         case .ComingSoon:
             GameInfo(title: "Mini Game",
@@ -60,6 +66,8 @@ enum GameRoute: Hashable, Identifiable {
             CommitSnakeGame()
         case .DinoRun:
             DinoRunGame()
+        case .Flappy:
+            FlappyBird()
         case .ComingSoon:
             Text("Coming Soon!")
         }
