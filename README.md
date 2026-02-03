@@ -17,8 +17,10 @@ A collection of interactive mini-games built with SwiftUI, showcasing modern iOS
 
 <table>
   <tr>
-    <td><img src="images/collections.png"/></td>
-    <td><img src="gifs/commitSnake.gif"/></td>
+    <td width="25%"><img src="images/collections-dark.png" width="100%"/></td>
+    <td width="25%"><img src="gifs/flappy.gif" width="100%"/></td>
+    <td width="25%"><img src="gifs/dinoRun.gif" width="100%"/></td>
+    <td width="25%"><img src="gifs/commitSnake.gif" width="100%"/></td>
   </tr>
 </table>
 
@@ -34,7 +36,3 @@ Contributions are welcome! Feel free to:
 ---
 
 #### This project is licensed under the MIT License
-
----
-
-**Note**: This is a learning project showcasing SwiftUI capabilities. Feel free to use it as a reference for your own projects!

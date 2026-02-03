@@ -26,17 +26,17 @@ enum GameRoute: Hashable, Identifiable {
         switch self {
         case .commitSnake:
             GameInfo(title: "Commit Snake",
-                    note: "GitHub graph & Trackball controls",
+                    note: "Grow your green streak, eat the cherry",
                     icon: "point.topleft.down.curvedto.point.bottomright.up",
                     isAvailable: true)
         case .DinoRun:
             GameInfo(title: "Dino Run",
-                     note: "Chrome offline dinosaur jump",
+                     note: "Classic Chrome offline game",
                      icon: "figure.gymnastics",
                      isAvailable: true)
         case .Flappy:
             GameInfo(title: "Flappy Bird",
-                     note: "Flappy Bird Clone",
+                     note: "Tap to flap, dodge the pipes",
                      icon: "bird.fill",
                      isAvailable: true)
         case .ComingSoon:
