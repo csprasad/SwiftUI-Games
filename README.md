@@ -11,14 +11,9 @@ A collection of interactive mini-games built with SwiftUI, showcasing modern iOS
 
 ## 🕹️ Games & Screenshots(gifs)
 
-### Commit Snake
-GitHub inspired snake game with trackball controls
-- Navigate through a GitHub contribution graph
-- Smooth trackball-based movement
-- Retro gaming meets developer culture
-
-### More Coming Soon!
-Additional games in development...
+> - Commit Snake
+> - Dino Run
+> - Flappy Bird
 
 <table>
   <tr>
