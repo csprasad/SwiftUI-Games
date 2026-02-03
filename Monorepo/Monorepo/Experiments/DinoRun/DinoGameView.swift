@@ -18,24 +18,18 @@ struct DinoRunGame: View {
                 /// can be merged
                 Text("HI")
                     .font(.bungeeTitle3)
-                    .foregroundStyle(.primary.opacity(0.75))
                 
                 Text("\(String(format: "%05d", engine.highScore))")
                     .font(.bungeeTitle3)
-                    .foregroundStyle(.primary.opacity(0.75))
-                    .monospacedDigit()
                 
                 Text(String(format: "%05d", engine.deciSeconds))
                     .font(.bungeeTitle3)
-                    .foregroundStyle(.primary.opacity(0.75))
-                    .monospacedDigit()
                 
                 Spacer()
                 Text((String(format: "%.1fx", engine.speedMultiplier)))
                     .font(.bungeeSpiceBody)
-                    .foregroundStyle(.green.opacity(0.8))
-                    .monospacedDigit()
             }
+            .foregroundStyle(.primary.opacity(0.7))
             .padding(.horizontal)
         
             // Viewport (The "Stage")

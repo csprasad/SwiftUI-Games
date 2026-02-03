@@ -8,11 +8,6 @@
 import SwiftUI
 import Observation
 
-// MARK: - Game State
-enum GameState {
-    case idle, playing, gameOver
-}
-
 // MARK: - Obstacles
 /// Current version supporting only cactus 🌵
 struct Obstacle: Identifiable {
