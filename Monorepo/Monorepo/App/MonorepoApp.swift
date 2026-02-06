@@ -28,9 +28,8 @@ struct MonorepoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            OrbitDodge()
-//            ArcadeHomeView()
-//                .font(.bungeeSpiceLargeTitle)
+            ArcadeHomeView()
+                .font(.bungeeSpiceLargeTitle)
         }
     }
 }
