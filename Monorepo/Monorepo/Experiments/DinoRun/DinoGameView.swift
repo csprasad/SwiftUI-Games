@@ -72,7 +72,7 @@ struct DinoRunGame: View {
         .task {
             // High frequency game loop with cancellation safety
             while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: 16_000_000) // ~60fps
+                try? await Task.sleep(nanoseconds: 16_000_000) // 60fps
                 if engine.state == .playing {
                     engine.update(currentInstant: .now)
                 }

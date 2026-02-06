@@ -61,7 +61,7 @@ final class FlappyEngine {
     }
     
     // MARK: - Core Game Loop
-    /// Called every frame (~60 FPS) to update game state
+    /// Called every frame (60 FPS) to update game state
     func update() {
         guard state == .playing else { return }
         
