@@ -19,6 +19,7 @@ enum GameRoute: Hashable, Identifiable {
     case ComingSoon
     case DinoRun
     case Flappy
+    case Orbit_Dodge
     
     var id: Self { self }
     
@@ -38,6 +39,11 @@ enum GameRoute: Hashable, Identifiable {
             GameInfo(title: "Flappy Bird",
                      note: "Tap to flap, dodge the pipes",
                      icon: "bird.fill",
+                     isAvailable: true)
+        case .Orbit_Dodge:
+            GameInfo(title: "Orbit Dodge",
+                     note: "Dodge incoming comets. Tap to reverse orbit",
+                     icon: "moonphase.full.moon",
                      isAvailable: true)
         case .ComingSoon:
             GameInfo(title: "Mini Game",
@@ -68,6 +74,8 @@ enum GameRoute: Hashable, Identifiable {
             DinoRunGame()
         case .Flappy:
             FlappyBird()
+        case .Orbit_Dodge:
+            OrbitDodge()
         case .ComingSoon:
             Text("Coming Soon!")
         }
