@@ -60,7 +60,8 @@ enum GameRoute: Hashable, Identifiable {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(info.title)
-                        .font(.bungeeSpiceTitle3)
+                        .font(.retroGameTitle3)
+                        .foregroundStyle(ThemeGradient.accentVertical)
                 }
             }
     }
@@ -81,3 +82,6 @@ enum GameRoute: Hashable, Identifiable {
         }
     }
 }
+
+
+

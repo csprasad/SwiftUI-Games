@@ -89,7 +89,6 @@ struct OrbitDodge: View {
                     .padding(40)
             }
         }
-        // Fixed-step update loop (~60fps). Logic separated from rendering.
         .task {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 16_000_000)

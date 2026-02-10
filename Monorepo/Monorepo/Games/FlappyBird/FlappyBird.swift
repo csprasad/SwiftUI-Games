@@ -16,7 +16,6 @@ struct FlappyBird: View {
             // MARK: Game Stage
             ZStack {
                 let bird: String = (colorScheme == .dark ? "🐤" : "🐧")
-                
                 // Infinite scrolling background
                 ZStack {
                     backgroundDecorations(for: colorScheme)
@@ -74,26 +73,12 @@ struct FlappyBird: View {
                 .frame(height: 100)
             }
             .overlay(alignment: engine.state == .idle ? .bottom : .center) {
-                // Bottom for idle, top for game ove
+                // Bottom for idle, top for game over
                 if engine.state == .idle || engine.state == .gameOver {
                     GameOverView(state: engine.state)
                         .padding(engine.state == .idle ? .bottom : .top, 60)
                 }
             }
-            
-            // Game state overlay
-//            .overlay {
-//                if engine.state == .idle || engine.state == .gameOver {
-//                    GameOverView(state: engine.state)
-//                        .padding(30)
-//                        .frame(
-//                            maxHeight: .infinity,
-//                            alignment: engine.state == .idle ? .bottom : .center
-//                        )
-//                        .padding(.bottom, engine.state == .idle ? 80 : 0)
-//                        .padding(.horizontal, 40)
-//                }
-//            }
         }
         .ignoresSafeArea()
         .contentShape(Rectangle())
@@ -113,17 +98,7 @@ struct FlappyBird: View {
     @ViewBuilder
     private func pipeView(height: CGFloat) -> some View {
         Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [
-                        .yellow,
-                        .orange.opacity(0.8),
-                        .red.opacity(0.8)
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
+            .fill(ThemeGradient.accentHorizontal.opacity(0.8))
             .frame(width: 65, height: height)
             .overlay(
                 Capsule()

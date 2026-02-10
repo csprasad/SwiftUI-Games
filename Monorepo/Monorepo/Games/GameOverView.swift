@@ -18,13 +18,7 @@ struct GameOverView: View {
             if state == .gameOver {
                 Text("GAME OVER")
                     .font(.retroGameLargeTitle)
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.yellow, .orange, .red],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
+                    .foregroundStyle(ThemeGradient.accentVertical)
                     .opacity(isVisible ? 1 : 0)
             }
             

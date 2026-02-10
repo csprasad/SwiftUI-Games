@@ -19,23 +19,11 @@ struct ArcadeHomeView: View {
                         Text("SWIFTUI")
                             .font(.retroGameLargeTitle)
                             .kerning(4)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.yellow, .orange, .red],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            )
+                            .foregroundStyle(ThemeGradient.accentVertical)
                         
                         Image(systemName: "dice")
                             .font(.retroGameTitle2)
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.yellow, .orange, .red],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            )
+                            .foregroundStyle(ThemeGradient.accentVertical)
                     }
                     
                     Text("ARCADE GAMES")
@@ -44,13 +32,7 @@ struct ArcadeHomeView: View {
                     
                     Rectangle()
                         .frame(maxHeight: 1)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.orange, .clear],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        .foregroundStyle(ThemeGradient.accentHorizontal)
                 }
                 .padding(.horizontal, 30)
                 .padding(.vertical)
