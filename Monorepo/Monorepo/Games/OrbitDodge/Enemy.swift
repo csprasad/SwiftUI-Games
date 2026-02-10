@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Polar-coordinate enemy moving toward the orbit center.
 struct Enemy: Identifiable {
     let id = UUID()
     var angle: CGFloat

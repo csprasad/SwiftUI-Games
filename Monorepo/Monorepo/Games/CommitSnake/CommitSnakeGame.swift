@@ -35,7 +35,7 @@ struct CommitSnakeGame: View {
                         .foregroundStyle(.primary.opacity(0.75))
                     
                     Text("\(engine.snakeBody.count - 3)")
-                        .font(.bungeeHeadline)
+                        .font(.retroGameHeadline) //bungeeHeadline
                         .foregroundStyle(Color.green)
                     Spacer()
                     Text("Level")
@@ -43,7 +43,7 @@ struct CommitSnakeGame: View {
                         .foregroundStyle(.primary.opacity(0.75))
                     
                     Text("\(engine.snakeBody.count / 5)")
-                        .font(.bungeeHeadline)
+                        .font(.retroGameHeadline)
                         .foregroundStyle(Color.green)
                 }
                 .padding(.horizontal, 20)

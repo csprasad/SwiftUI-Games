@@ -6,22 +6,25 @@
 //
 
 import SwiftUI
+internal import Combine
 
+/// Overlay shown for idle and game-over states with blinking prompt.
 struct GameOverView: View {
     let state: GameState
     @State private var isVisible = true
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 6) {
             if state == .gameOver {
                 Text("GAME OVER")
-                    .font(.bungeeSpiceTitle)
+                    .font(.retroGameLargeTitle)
+                    .foregroundStyle(ThemeGradient.accentVertical)
                     .opacity(isVisible ? 1 : 0)
             }
             
             Text(state == .idle ? "TAP TO START" : "TAP TO RESTART")
-                .font(.bungeeHeadline)
-                .foregroundStyle(state == .idle ? .gray : .secondary)
+                .font(.retroGameHeadline)
+                .foregroundStyle(.primary.opacity(0.6))
                 .opacity(state == .idle ? (isVisible ? 1 : 0.3) : 1)
         }
         .onAppear {
@@ -29,5 +32,12 @@ struct GameOverView: View {
                 isVisible.toggle()
             }
         }
+        .padding()
+        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 24))
     }
+}
+
+
+#Preview {
+    GameOverView(state: .gameOver)
 }

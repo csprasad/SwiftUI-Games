@@ -14,67 +14,41 @@ struct ArcadeHomeView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 // Arcade Header
-                VStack(spacing: 4) {
-                    HStack(spacing: 16) {
-                            Image(systemName: "gamecontroller.fill")
-                                .font(.system(size: 24))
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.yellow, .orange, .red],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
-                            
-                            Text("Nano Repo")
-                                .font(.bungeeSpiceLargeTitle)
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.green, .white, .green],
-                                        startPoint: .topTrailing,
-                                        endPoint: .bottomLeading
-                                    )
-                                )
-                            
-                            Image(systemName: "gamecontroller.fill")
-                                .font(.system(size: 24))
-                                .foregroundStyle(
-                                    LinearGradient(
-                                        colors: [.yellow, .orange, .red],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                                )
-                        }
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: 6) {
+                        Text("SWIFTUI")
+                            .font(.retroGameLargeTitle)
+                            .kerning(4)
+                            .foregroundStyle(ThemeGradient.accentVertical)
+                        
+                        Image(systemName: "dice")
+                            .font(.retroGameTitle2)
+                            .foregroundStyle(ThemeGradient.accentVertical)
+                    }
                     
                     Text("ARCADE GAMES")
-                        .font(.bungeeBody)
+                        .font(.retroGaming(size: 13))
                         .foregroundStyle(.orange.opacity(0.9))
                     
                     Rectangle()
-                        .frame(maxHeight: 0.5)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.clear, .orange, .clear],
-                                startPoint: .trailing,
-                                endPoint: .leading
-                            )
-                        )
+                        .frame(maxHeight: 1)
+                        .foregroundStyle(ThemeGradient.accentHorizontal)
                 }
-                .padding(.top, 20)
-                .padding(.bottom, 10)
+                .padding(.horizontal, 30)
+                .padding(.vertical)
                 
                 // Game List
                 ScrollView {
-                    VStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 12) {
                         ForEach(games) { game in
                             NavigationLink(value: game) {
                                 ArcadeCard(game: game)
                             }
+                            .buttonStyle(.plain)
                             .disabled(!game.info.isAvailable)
                         }
                     }
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal)
                 }
                 .navigationDestination(for: GameRoute.self) { route in
                     route.destination()

@@ -11,11 +11,11 @@ struct ArcadeCard: View {
     let game: GameRoute
 
     var body: some View {
-        HStack(alignment: .center, spacing: 8) {
+        HStack(spacing: 6) {
             // Game Title with retro glow
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text("> \(game.info.title.uppercased())")
-                    .font(.bungeeTitle2)
+                    .font(.retroGameTitle3)
                     .foregroundStyle(
                         LinearGradient(
                             colors: [.yellow, .orange, .red],
@@ -23,12 +23,13 @@ struct ArcadeCard: View {
                             endPoint: .bottom
                         )
                     )
-                    .shadow(color: .orange.opacity(0.7), radius: 50)
+                    .shadow(color: .orange, radius: 50)
                 
                 // Subtitle
                 Text(game.info.note)
-                    .font(.system(size: 12, design: .monospaced))
-                    .foregroundStyle(.primary)
+                    .font(.retroGameBody)
+                    .foregroundStyle(.blue)
+                    .layoutPriority(1)
                 
                 Rectangle()
                     .stroke(
@@ -42,10 +43,9 @@ struct ArcadeCard: View {
                     .frame(width: 208, height: 2)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            Spacer()
             
             Image(systemName: "play.fill")
-                .font(.bungeeSpiceTitle)
+                .font(.retroGameTitle2)
                 .foregroundStyle(
                     LinearGradient(
                         colors: [.yellow, .orange, .red],
@@ -53,7 +53,7 @@ struct ArcadeCard: View {
                         endPoint: .bottom
                     )
                 )
-                .padding(.trailing, 16)
+                .padding(.trailing, 5)
                 
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -82,7 +82,11 @@ struct ArcadeCard: View {
                         .strokeBorder(.orange.opacity(0.3), lineWidth: 2)
                 )
         )
-        .opacity(game.info.isAvailable ? 1.0 : 0.4)
+        .opacity(game.info.isAvailable ? 1.0 : 0.5)
     }
 }
 
+
+#Preview {
+    ArcadeCard(game: GameRoute.Orbit_Dodge)
+}
