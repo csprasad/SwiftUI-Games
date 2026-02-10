@@ -11,6 +11,7 @@ import SwiftUI
 struct MonorepoApp: App {
     
     init() {
+        runFontTest() 
         // Configure the Navigation Bar Appearance globally
         let appearance = UINavigationBarAppearance()
         
@@ -30,6 +31,15 @@ struct MonorepoApp: App {
         WindowGroup {
             ArcadeHomeView()
                 .font(.bungeeSpiceLargeTitle)
+        }
+    }
+    
+    func runFontTest() {
+        for family in UIFont.familyNames {
+            print("Family: \(family)")
+            for name in UIFont.fontNames(forFamilyName: family) {
+                print("  \(name)")
+            }
         }
     }
 }

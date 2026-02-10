@@ -27,27 +27,27 @@ enum GameRoute: Hashable, Identifiable {
         switch self {
         case .commitSnake:
             GameInfo(title: "Commit Snake",
-                    note: "Grow your green streak, eat the cherry",
+                    note: "Grow your green streak, eat the cherry.",
                     icon: "point.topleft.down.curvedto.point.bottomright.up",
                     isAvailable: true)
         case .DinoRun:
             GameInfo(title: "Dino Run",
-                     note: "Classic Chrome offline game",
+                     note: "Classic Chrome offline game.",
                      icon: "figure.gymnastics",
                      isAvailable: true)
         case .Flappy:
             GameInfo(title: "Flappy Bird",
-                     note: "Tap to flap, dodge the pipes",
+                     note: "Tap to flap, dodge the pipes.",
                      icon: "bird.fill",
                      isAvailable: true)
         case .Orbit_Dodge:
             GameInfo(title: "Orbit Dodge",
-                     note: "Dodge incoming comets. Tap to reverse orbit",
+                     note: "Dodge incoming comets. Tap to reverse orbit.",
                      icon: "moonphase.full.moon",
                      isAvailable: true)
         case .ComingSoon:
             GameInfo(title: "Mini Game",
-                    note: "Coming soon",
+                    note: "Coming soon...",
                     icon: "gamecontroller",
                     isAvailable: false)
         }
@@ -71,7 +71,7 @@ enum GameRoute: Hashable, Identifiable {
         case .commitSnake:
             CommitSnakeGame()
         case .DinoRun:
-            DinoRunGame()
+            DinoRunView()
         case .Flappy:
             FlappyBird()
         case .Orbit_Dodge:

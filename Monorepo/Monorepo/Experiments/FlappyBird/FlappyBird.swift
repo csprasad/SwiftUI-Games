@@ -13,114 +13,103 @@ struct FlappyBird: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // MARK: HUD
-            HStack {
-                // High score display
-                Text("HI \(engine.highScore)")
-                    .font(.bungeeTitle3)
-                
-                Spacer()
-                
-                // Current score with numeric animation
-                Text("\(engine.score)")
-                    .font(.bungeeSpiceTitle2)
-                    .contentTransition(.numericText())
-                    .animation(.spring(duration: 0.2), value: engine.score)
-            }
-            .foregroundStyle(.primary.opacity(0.7))
-            .padding()
-            
-            // MARK: Game Stage (Main Viewport)
+            // MARK: Game Stage
             ZStack {
-                // Bird emoji based on color scheme
                 let bird: String = (colorScheme == .dark ? "🐤" : "🐧")
                 
-                // MARK: Scrolling Background
-                // Infinite scrolling using two copies side by side
+                // Infinite scrolling background
                 ZStack {
-                    // First copy: Primary background
                     backgroundDecorations(for: colorScheme)
                         .offset(x: engine.bgOffset)
                     
-                    // Second copy: Seamless loop continuation
                     backgroundDecorations(for: colorScheme)
-                        .offset(x: engine.bgOffset + 400) // Match loopWidth in engine
+                        .offset(x: engine.bgOffset + 400)
                 }
                 
-                // MARK: Pipes
-                // Dynamically rendered obstacles
+                // Pipes
                 ForEach(engine.pipes) { pipe in
                     Group {
-                        // Top pipe (hanging down)
                         pipeView(height: 500)
                             .offset(x: pipe.xPos, y: pipe.gapTop - 250)
                         
-                        // Bottom pipe (standing up)
                         pipeView(height: 500)
                             .offset(x: pipe.xPos, y: pipe.gapTop + 420)
                     }
                 }
                 
-                // MARK: Bird
-                // Player character with physics-based vertical movement
+                // Bird
                 Text(bird)
                     .font(.system(size: 45))
                     .offset(y: engine.birdY)
-                    .scaleEffect(x: -1, y: 1) // Flip horizontally for direction
+                    .scaleEffect(x: -1, y: 1)
                     .shadow(radius: 4, y: 4)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .drawingGroup() // Performance optimization: renders as single layer
-            .clipped() // Prevents overflow outside game bounds
+            .drawingGroup()
+            .clipped()
             .border(width: 1, edges: [.top, .bottom], color: .secondary.opacity(0.2))
             
-            // MARK: Floor Limit Detection
-            // Dynamically calculate ground collision boundary
+            // Floor collision boundary derived from geometry
             .onGeometryChange(for: CGFloat.self) { proxy in
-                proxy.size.height / 2 // Distance from center to bottom edge
+                proxy.size.height / 2
             } action: { newValue in
-                engine.floorLimit = newValue - 25 // Adjust for bird height
+                engine.floorLimit = newValue - 25
             }
-            
-            // MARK: Game Over / Start Overlay
-            .overlay {
+            .overlay(alignment: .top) {
+                // MARK: HUD
+                HStack(alignment: .top) {
+                    Text("HI \(engine.highScore)")
+                        .font(.retroGameTitle3)
+                    
+                    Spacer()
+                    
+                    Text("\(engine.score)")
+                        .font(.retroGameTitle3)
+                        .contentTransition(.numericText())
+                        .animation(.spring(duration: 0.2), value: engine.score)
+                }
+                .foregroundStyle(.primary.opacity(0.7))
+                .padding(.top, 200)
+                .padding(.horizontal)
+                .frame(height: 100)
+            }
+            .overlay(alignment: engine.state == .idle ? .bottom : .center) {
+                // Bottom for idle, top for game ove
                 if engine.state == .idle || engine.state == .gameOver {
-                    ZStack {
-                        GameOverView(state: engine.state)
-                            .padding(30)
-                            .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24))
-                            .frame(
-                                maxHeight: .infinity,
-                                alignment: engine.state == .idle ? .bottom : .center
-                            )
-                            .padding(.bottom, engine.state == .idle ? 80 : 0)
-                            .padding(.horizontal, 40)
-                    }
+                    GameOverView(state: engine.state)
+                        .padding(engine.state == .idle ? .bottom : .top, 60)
                 }
             }
+            
+            // Game state overlay
+//            .overlay {
+//                if engine.state == .idle || engine.state == .gameOver {
+//                    GameOverView(state: engine.state)
+//                        .padding(30)
+//                        .frame(
+//                            maxHeight: .infinity,
+//                            alignment: engine.state == .idle ? .bottom : .center
+//                        )
+//                        .padding(.bottom, engine.state == .idle ? 80 : 0)
+//                        .padding(.horizontal, 40)
+//                }
+//            }
         }
-        .ignoresSafeArea(edges: .bottom) // Extend to screen bottom
-        .contentShape(Rectangle()) // Make entire area tappable
+        .ignoresSafeArea()
+        .contentShape(Rectangle())
+        .onTapGesture { engine.handleTap() }
         
-        // MARK: Tap Gesture
-        // Primary game interaction: flap to fly
-        .onTapGesture {
-            engine.handleTap()
-        }
-        
-        // MARK: Game Loop
-        // 60 FPS update cycle (~16ms per frame)
+        // Fixed-step game loop (~60 FPS)
         .task {
             while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: 16_000_000) // ~60 FPS
+                try? await Task.sleep(nanoseconds: 16_000_000)
                 engine.update()
             }
         }
     }
     
-    // MARK: - Pipe View Component
-    /// Creates a styled pipe obstacle with gradient and glass effect
-    /// - Parameter height: Vertical size of the pipe
+    // MARK: - Pipe View
+    /// Styled pipe obstacle.
     @ViewBuilder
     private func pipeView(height: CGFloat) -> some View {
         Capsule()
@@ -144,12 +133,9 @@ struct FlappyBird: View {
 }
 
 // MARK: - Background Decorations
-/// Renders ambient decorations (clouds, celestial objects, waves)
-/// Adapts visuals based on light/dark mode
-/// - Parameter scheme: Current color scheme (light/dark)
+/// Theme-aware ambient background elements.
 @ViewBuilder
 private func backgroundDecorations(for scheme: ColorScheme) -> some View {
-    // Theme aware symbols
     let isDark = scheme == .dark
     let dayNightIcon: String = isDark ? "☾" : "☼"
     let dayStarIcon: String = isDark ? "ᯓ" : "𓂃ོ"
@@ -158,45 +144,35 @@ private func backgroundDecorations(for scheme: ColorScheme) -> some View {
     let skyColor: Color = isDark ? .gray : .black
     
     Group {
-        // Upper decorative clouds
         Text(clouds)
-            .font(.system(size: 60))
+            .font(.retroGaming(size: 50))
             .offset(x: 100, y: -310)
-            .opacity(0.6)
         
-        // Left cloud
         Text("☁️")
-            .font(.system(size: 60))
+            .font(.retroGaming(size: 60))
             .offset(x: -140, y: -250)
-            .opacity(0.3)
         
-        // Celestial centerpiece (moon/sun with stars)
         Text("\(dayStarIcon) \(dayNightIcon) \(dayStarIcon)")
-            .font(.system(size: 90))
+            .font(.retroGaming(size: 70))
             .offset(x: 0, y: -190)
-            .opacity(0.6)
         
-        // Right cloud
         Text("☁️")
-            .font(.system(size: 80))
+            .font(.retroGaming(size: 60))
             .offset(x: 110, y: -120)
-            .opacity(0.3)
         
-        // Bottom wave pattern (ocean/ground decoration)
         Text(waves)
-            .font(.system(size: 35))
+            .font(.retroGaming(size: 35))
             .lineLimit(6)
             .lineSpacing(10)
             .offset(x: 0, y: 200)
-            .opacity(0.8)
     }
+    .opacity(0.3)
     .foregroundStyle(skyColor.opacity(0.9))
     .shadow(color: .primary.opacity(0.2), radius: 10, x: 0, y: 2)
-    .allowsHitTesting(false) // Performance: prevent touch handling
-    .drawingGroup() // Performance: render as single bitmap layer
+    .allowsHitTesting(false)
+    .drawingGroup()
 }
 
-// MARK: - Preview
 #Preview {
     FlappyBird()
 }

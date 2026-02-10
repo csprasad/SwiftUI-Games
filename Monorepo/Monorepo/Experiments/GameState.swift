@@ -6,9 +6,10 @@
 //
 
 // MARK: - Game States
-/// Represents the current state of the game
+/// High-level lifecycle state of game.
 enum GameState {
-    case idle       // Waiting to start
-    case playing    // Active gameplay
-    case gameOver   // Game ended
+    case idle
+    case playing
+    case gameOver
 }
+
