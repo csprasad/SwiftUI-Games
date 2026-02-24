@@ -18,7 +18,6 @@ struct FlappyBird: View {
         VStack(spacing: 0) {
             // MARK: Game Stage
             ZStack {
-                let bird: String = (colorScheme == .dark ? "🐤" : "🐧")
                 // Infinite scrolling background
                 ZStack {
                     backgroundDecorations(for: colorScheme)
@@ -31,16 +30,16 @@ struct FlappyBird: View {
                 // Pipes
                 ForEach(engine.pipes) { pipe in
                     Group {
-                        pipeView(height: 500)
+                        pipeView(height: 500, isTopPipe: true)
                             .offset(x: pipe.xPos, y: pipe.gapTop - 250)
                         
-                        pipeView(height: 500)
+                        pipeView(height: 500, isTopPipe: false)
                             .offset(x: pipe.xPos, y: pipe.gapTop + 420)
                     }
                 }
                 
                 // Bird
-                Text(bird)
+                Text("🐤")
                     .font(.system(size: 45))
                     .offset(y: engine.birdY)
                     .scaleEffect(x: -1, y: 1)
@@ -99,14 +98,40 @@ struct FlappyBird: View {
     // MARK: - Pipe View
     /// Styled pipe obstacle.
     @ViewBuilder
-    private func pipeView(height: CGFloat) -> some View {
-        Capsule()
-            .fill(ThemeGradient.accentHorizontal.opacity(0.8))
-            .frame(width: 65, height: height)
+    private func pipeView(height: CGFloat, isTopPipe: Bool) -> some View {
+        VStack(spacing: 0) {
+            // Cap for bottom pipes
+            if !isTopPipe {
+                pipeCap
+            }
+            
+            // Pipe
+            Rectangle()
+                .fill(ThemeGradient.greenGradient)
+                .frame(width: 60, height: height - 25)
+                .overlay(
+                    Rectangle()
+                        .stroke(.white.opacity(0.4), lineWidth: 1)
+                )
+            
+            if isTopPipe {
+                // Cap for top pipes
+                pipeCap
+            }
+        }
+    }
+
+    // Reusable Pipe Cap
+    private var pipeCap: some View {
+        Rectangle()
+            .fill(ThemeGradient.greenGradient)
+            .frame(width: 76, height: 25)
+            .cornerRadius(4)
             .overlay(
-                Capsule()
-                    .stroke(.secondary.opacity(0.3), lineWidth: 2)
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(.white.opacity(0.6), lineWidth: 1.5)
             )
+            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
     }
 }
 
