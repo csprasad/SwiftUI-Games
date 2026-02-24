@@ -35,7 +35,7 @@ struct ArcadeHomeView: View {
                     
                     Rectangle()
                         .frame(maxHeight: 1)
-                        .foregroundStyle(ThemeGradient.accentHorizontal)
+                        .foregroundStyle(ThemeGradient.accentVertical)
                 }
                 .padding(.horizontal, 30)
                 .padding(.vertical)

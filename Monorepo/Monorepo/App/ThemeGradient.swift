@@ -26,4 +26,10 @@ enum ThemeGradient {
         startPoint: .leading,
         endPoint: .trailing
     )
+    
+    static let greenGradient = LinearGradient(
+        colors: [.green, .green, .green.opacity(0.6)],
+        startPoint: .leading,
+        endPoint: .trailing
+    )
 }
