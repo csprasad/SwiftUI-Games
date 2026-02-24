@@ -2,8 +2,11 @@
 //  FlappyBird.swift
 //  Monorepo
 //
-//  Created by codeAlligator on 03/02/26.
-//
+/// Created by `C S Prasad` on `03/02/26`
+///
+/// ### Social
+/// `Instagram` : ``@csprasad.ios`` • `X` : ``@csprasad_ios`` • `Github` : ``@csprasad``
+///
 
 import SwiftUI
 
