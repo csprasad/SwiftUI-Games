@@ -2,8 +2,11 @@
 //  DinoRunView.swift
 //  Monorepo
 //
-//  Created by codeAlligator on 31/01/26.
-//
+/// Created by `C S Prasad` on `31/01/26`
+///
+/// ### Social
+/// `Instagram` : ``@csprasad.ios`` • `X` : ``@csprasad_ios`` • `Github` : ``@csprasad``
+///
 
 import SwiftUI
 

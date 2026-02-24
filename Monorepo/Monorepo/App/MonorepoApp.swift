@@ -2,8 +2,15 @@
 //  MonorepoApp.swift
 //  Monorepo
 //
-//  Created by codeAlligator on 30/01/26.
-//
+/// Created by `C S Prasad` on `30/01/26`
+///
+///`iOS • SwiftUI • Creative Coding`
+///
+/// ### Social
+/// `Instagram` : ``@csprasad.ios``
+/// `X`                   : ``@csprasad_ios``
+/// `Github`        : ``@csprasad``
+///
 
 import SwiftUI
 
