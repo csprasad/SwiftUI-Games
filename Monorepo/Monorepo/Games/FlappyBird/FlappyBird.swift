@@ -20,11 +20,7 @@ struct FlappyBird: View {
             ZStack {
                 // Infinite scrolling background
                 ZStack {
-                    backgroundDecorations(for: colorScheme)
-                        .offset(x: engine.bgOffset)
-                    
-                    backgroundDecorations(for: colorScheme)
-                        .offset(x: engine.bgOffset + 400)
+                    decoration(for: colorScheme, offset: engine.bgOffset)
                 }
                 
                 // Pipes
@@ -40,10 +36,9 @@ struct FlappyBird: View {
                 
                 // Bird
                 Text("🐤")
-                    .font(.system(size: 45))
+                    .font(.system(size: 50))
                     .offset(y: engine.birdY)
                     .scaleEffect(x: -1, y: 1)
-                    .shadow(radius: 4, y: 4)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .drawingGroup()
@@ -60,17 +55,17 @@ struct FlappyBird: View {
                 // MARK: HUD
                 HStack(alignment: .top) {
                     Text("HI \(engine.highScore)")
-                        .font(.retroGameTitle3)
+                        .font(.retroGameTitle)
                     
                     Spacer()
                     
                     Text("\(engine.score)")
-                        .font(.retroGameTitle3)
+                        .font(.retroGameTitle)
                         .contentTransition(.numericText())
                         .animation(.spring(duration: 0.2), value: engine.score)
                 }
                 .foregroundStyle(.primary.opacity(0.7))
-                .padding(.top, 200)
+                .padding(.top, 100)
                 .padding(.horizontal)
                 .frame(height: 100)
             }
@@ -101,79 +96,56 @@ struct FlappyBird: View {
     private func pipeView(height: CGFloat, isTopPipe: Bool) -> some View {
         VStack(spacing: 0) {
             // Cap for bottom pipes
-            if !isTopPipe {
-                pipeCap
-            }
-            
+            if !isTopPipe { pipeCap }
+                        
             // Pipe
             Rectangle()
-                .fill(ThemeGradient.greenGradient)
-                .frame(width: 60, height: height - 25)
-                .overlay(
-                    Rectangle()
-                        .stroke(.white.opacity(0.4), lineWidth: 1)
-                )
+                .fill(ThemeGradient.pixelPipeGradient(for: colorScheme))
+                .frame(width: 50, height: height - 25)
             
-            if isTopPipe {
-                // Cap for top pipes
-                pipeCap
-            }
+            // Cap for top pipes
+            if isTopPipe { pipeCap }
         }
     }
 
     // Reusable Pipe Cap
     private var pipeCap: some View {
         Rectangle()
-            .fill(ThemeGradient.greenGradient)
-            .frame(width: 76, height: 25)
-            .cornerRadius(4)
+            .fill(ThemeGradient.pixelPipeGradient(for: colorScheme))
+            .frame(width: 65, height: 25)
             .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(.white.opacity(0.6), lineWidth: 1.5)
+                Rectangle()
+                    .stroke(.black.opacity(0.5), lineWidth: 1)
             )
-            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
     }
 }
 
 // MARK: - Background Decorations
 /// Theme-aware ambient background elements.
+
 @ViewBuilder
-private func backgroundDecorations(for scheme: ColorScheme) -> some View {
+private func decoration(for scheme: ColorScheme, offset: CGFloat) -> some View {
     let isDark = scheme == .dark
-    let dayNightIcon: String = isDark ? "☾" : "☼"
-    let dayStarIcon: String = isDark ? "ᯓ" : "𓂃ོ"
-    let clouds: String = isDark ? "⋆˚☆˖°⋆｡° ✮˖ ࣪ ⊹" : "⋆｡ﾟ☁︎｡⋆𓂃 ོ𓂃"
-    let waves: String = "𓏲𓂃𓂃𓂃.˚﹏𓊝﹏ 𓂁﹏ ࣪ ﹏𓆝﹏𓆟﹏𓆞﹏𓆝﹏𓆟﹏﹏𓂁˚﹏﹏﹏𓅸﹏ ﹏ ﹏﹏ ﹏﹏ 𓊝﹏ ﹏ ﹏﹏﹏𓂁 ﹏﹏﹏﹏﹏ 𓏲𓂃𓂃𓂃𓊞﹏ ﹏ ﹏﹏ ܸ.ˬ. ܸ ﹏﹏ ﹏﹏  ܸ.ˬ. ܸ ﹏﹏"
-    let skyColor: Color = isDark ? .gray : .black
-    
-    Group {
-        Text(clouds)
-            .font(.retroGaming(size: 50))
-            .offset(x: 100, y: -310)
+
+    GeometryReader { geo in
+        let width = geo.size.width
         
-        Text("☁️")
-            .font(.retroGaming(size: 60))
-            .offset(x: -140, y: -250)
-        
-        Text("\(dayStarIcon) \(dayNightIcon) \(dayStarIcon)")
-            .font(.retroGaming(size: 70))
-            .offset(x: 0, y: -190)
-        
-        Text("☁️")
-            .font(.retroGaming(size: 60))
-            .offset(x: 110, y: -120)
-        
-        Text(waves)
-            .font(.retroGaming(size: 35))
-            .lineLimit(6)
-            .lineSpacing(10)
-            .offset(x: 0, y: 200)
+        ZStack(alignment: .leading) {
+            // Image 1
+            Image(isDark ? "flappyBg-Dark" : "flappyBg-Lite")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: geo.size.height)
+                .offset(x: offset)
+            
+            Image(isDark ? "flappyBg-Dark" : "flappyBg-Lite")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: width, height: geo.size.height)
+                .offset(x: offset + width)
+        }
     }
-    .opacity(0.3)
-    .foregroundStyle(skyColor.opacity(0.9))
-    .shadow(color: .primary.opacity(0.2), radius: 10, x: 0, y: 2)
-    .allowsHitTesting(false)
-    .drawingGroup()
+    .ignoresSafeArea()
 }
 
 #Preview {

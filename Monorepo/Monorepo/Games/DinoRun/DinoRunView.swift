@@ -32,7 +32,7 @@ struct DinoRunView: View {
                     .font(.retroGameHeadline)
             }
             .foregroundStyle(.primary.opacity(0.7))
-            .padding(.top, 100)
+            .padding(.top, 40)
             .padding(.horizontal)
             
             // MARK: Game Stage
@@ -58,7 +58,6 @@ struct DinoRunView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())
-            .onTapGesture { engine.handleButtonTap() }
             .drawingGroup()
             .clipped()
             .overlay(alignment: engine.state == .idle ? .bottom : .top) {
@@ -67,7 +66,7 @@ struct DinoRunView: View {
                         .padding(engine.state == .idle ? .bottom : .top, 60)
                 }
             }
-            
+            .onTapGesture { engine.handleButtonTap() }
         }
         // Game loop (60 FPS)
         .task {

@@ -84,14 +84,12 @@ struct OrbitDodge: View {
                 Spacer()
             }
         }
-        .contentShape(Rectangle())
-        .onTapGesture { engine.tapAction() }
         .overlay {
             if engine.state != .playing {
                 GameOverView(state: engine.state)
-                    .padding(40)
             }
         }
+        .onTapGesture { engine.tapAction() }
         .task {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 16_000_000)

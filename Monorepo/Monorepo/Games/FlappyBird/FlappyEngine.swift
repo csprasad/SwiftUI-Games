@@ -96,10 +96,10 @@ final class FlappyEngine {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }
             
-            // Approximate 30x30 bird hitbox check
-            if abs(pipes[i].xPos) < 28 {
-                let birdTop = birdY - 15
-                let birdBottom = birdY + 15
+            // Approximate 30x30 birdY & 48 birdX hitbox check 
+            if abs(pipes[i].xPos) < 48 {
+                let birdTop = birdY - 20
+                let birdBottom = birdY + 20
                 
                 if birdTop < pipes[i].gapTop || birdBottom > (pipes[i].gapTop + pipeGapHeight) {
                     endGame()
