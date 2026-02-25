@@ -20,7 +20,7 @@ struct GameOverView: View {
         VStack(spacing: 6) {
             if state == .gameOver {
                 Text("GAME OVER")
-                    .font(.retroGameLargeTitle)
+                    .font(.retroGaming(size: 44))
                     .foregroundStyle(ThemeGradient.accentVertical)
                     .opacity(isVisible ? 1 : 0)
             }
@@ -35,8 +35,9 @@ struct GameOverView: View {
                 isVisible.toggle()
             }
         }
-        .padding()
-        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 24))
+        .padding(state == .gameOver ? 48 : 24)
+        .frame(maxWidth: .infinity)
+        .glassEffect(.clear, in: Rectangle())
     }
 }
 
