@@ -117,6 +117,7 @@ struct FlappyBird: View {
                 Rectangle()
                     .stroke(.black.opacity(0.5), lineWidth: 1)
             )
+            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
     }
 }
 
