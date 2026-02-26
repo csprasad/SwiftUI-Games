@@ -22,38 +22,69 @@ final class CommitSnakeEngine {
     var snakeBody: [Int] = [45, 44, 43]
     var foodPosition: Int = 100
     var currentDirection: Direction = .right
-    var isGameOver = false
+    var state: GameState = .idle
+    
+    func handleButtonTap() {
+        switch state {
+        case .idle:
+            state = .playing
+        case .gameOver:
+            resetGame()
+            state = .playing
+        case .playing:
+            break
+        }
+    }
     
     func move() {
-        guard !isGameOver else { return }
+        guard state == .playing else { return }
         
-        // Calculate new head position
         let head = snakeBody[0]
         var newHead = head
         
         switch currentDirection {
-            case .up: newHead -= columns
-            case .down: newHead += columns
-            case .left: newHead -= 1
-            case .right: newHead += 1
+        case .up:
+            newHead = head - columns
+            if newHead < 0 { newHead += columns * rows }
+        case .down:
+            newHead = head + columns
+            if newHead >= columns * rows { newHead -= columns * rows }
+        case .left:
+            newHead = (head % columns == 0) ? head + (columns - 1) : head - 1
+        case .right:
+            newHead = (head % columns == columns - 1) ? head - (columns - 1) : head + 1
         }
         
-        // Wrap around or Collision logic
-        if newHead < 0 || newHead >= (columns * rows) || snakeBody.contains(newHead) {
-            // Basic collision for now
+        if snakeBody.contains(newHead) {
+            state = .gameOver
             return
         }
         
         snakeBody.insert(newHead, at: 0)
         
         if newHead == foodPosition {
-            spawnFood() // Grow the snake
+            if snakeBody.count == columns * rows {
+                state = .gameOver
+                return
+            }
+            spawnFood()
         } else {
-            snakeBody.removeLast() // Move forward
+            snakeBody.removeLast()
         }
     }
     
+    private func resetGame() {
+        snakeBody = [45, 44, 43]
+        foodPosition = 100
+        currentDirection = .right
+    }
+    
     private func spawnFood() {
-        foodPosition = Int.random(in: 0..<(columns * rows))
+        let occupied = Set(snakeBody)
+        var candidate: Int
+        repeat {
+            candidate = Int.random(in: 0..<(columns * rows))
+        } while occupied.contains(candidate)
+        foodPosition = candidate
     }
 }
