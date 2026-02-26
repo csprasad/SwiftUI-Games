@@ -9,11 +9,14 @@
 ///
 
 import SwiftUI
+internal import Combine
 
 struct TrackballView: View {
     let engine: CommitSnakeEngine
     @State private var ballRotation = CGSize.zero
     @State private var feedbackTrigger: Int = 0
+    let onFirstMove: () -> Void
+
     
     var body: some View {
         // Simple "Socket" background
@@ -21,7 +24,7 @@ struct TrackballView: View {
             .fill(Color(white: 0.1))
             .frame(width: 140, height: 140)
             .overlay {
-                // The actual Ball Image
+                // The rolling Ball Image
                 Image("trackball")
                     .resizable()
                     .clipShape(Circle())
@@ -46,15 +49,22 @@ struct TrackballView: View {
     }
     
     private func updateDirection(from translation: CGSize) {
-        let oldDirection = engine.currentDirection
-        
-        // Map 2D swipe to 4-way move
-        if abs(translation.width) > abs(translation.height) {
-            engine.currentDirection = translation.width > 0 ? .right : .left
-        } else {
-            engine.currentDirection = translation.height > 0 ? .down : .up
+        guard engine.state == .playing else { return }
+
+        if engine.state == .idle || engine.state == .gameOver {
+            onFirstMove()
         }
         
+        let oldDirection = engine.currentDirection
+        
+        let proposed: Direction = abs(translation.width) > abs(translation.height)
+            ? (translation.width > 0 ? .right : .left)
+            : (translation.height > 0 ? .down : .up)
+        
+        let opposites: [Direction: Direction] = [.up: .down, .down: .up, .left: .right, .right: .left]
+        guard opposites[oldDirection] != proposed else { return }
+        
+        engine.currentDirection = proposed
         if oldDirection != engine.currentDirection {
             feedbackTrigger += 1
         }

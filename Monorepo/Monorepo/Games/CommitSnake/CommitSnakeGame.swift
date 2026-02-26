@@ -12,39 +12,42 @@ import SwiftUI
 
 struct CommitSnakeGame: View {
     @State private var engine = CommitSnakeEngine()
+    @State private var gameLoopID = 0
     
     var body: some View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
-                // HUD Space: Leave room for the floating glass HUD
-                Spacer()
-                    .frame(height: 50)
+                Spacer().frame(height: 50)
                 
-                //Grid: occupies available space
                 CommitGridView(engine: engine)
-                    .layoutPriority(1) // Ensures the grid gets space first
+                    .layoutPriority(1)
+                    .overlay(alignment: engine.state == .idle ? .bottom : .top) {
+                        if engine.state == .idle || engine.state == .gameOver {
+                            GameOverView(state: engine.state)
+                                .padding(engine.state == .idle ? .bottom : .top, 60)
+                        }
+                    }
+                    .onTapGesture {
+                        handleTrigger()
+                    }
                 
-                // Controller Area: Fixed at the bottom
-                TrackballView(engine: engine)
+                TrackballView(engine: engine, onFirstMove: handleTrigger)
                     .frame(height: 100)
                     .padding(.bottom, 20)
             }
-
-            // HUD: Scoreboard floats on top using ZStack alignment
+            
             GlassEffectContainer {
                 HStack {
                     Text("COMMITS")
                         .font(.bungeeHeadline)
                         .foregroundStyle(.primary.opacity(0.75))
-                    
                     Text("\(engine.snakeBody.count - 3)")
-                        .font(.retroGameHeadline) //bungeeHeadline
+                        .font(.retroGameHeadline)
                         .foregroundStyle(Color.green)
                     Spacer()
                     Text("Level")
                         .font(.bungeeHeadline)
                         .foregroundStyle(.primary.opacity(0.75))
-                    
                     Text("\(engine.snakeBody.count / 5)")
                         .font(.retroGameHeadline)
                         .foregroundStyle(Color.green)
@@ -54,16 +57,22 @@ struct CommitSnakeGame: View {
             }
             .padding()
         }
-        .task {
-            // Check for cancellation at the start of every loop iteration
-            while !engine.isGameOver && !Task.isCancelled {
+        .task(id: gameLoopID) {
+            while engine.state != .gameOver && !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 150_000_000)
-                
-                // Final check before executing logic to prevent a "zombie" move
                 if !Task.isCancelled {
                     engine.move()
                 }
             }
+        }
+    }
+    
+    private func handleTrigger() {
+        if engine.state == .idle {
+            engine.handleButtonTap()
+        } else if engine.state == .gameOver {
+            engine.handleButtonTap()
+            gameLoopID += 1 // restart the task loop
         }
     }
 }
