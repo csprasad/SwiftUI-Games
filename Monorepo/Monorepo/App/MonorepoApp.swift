@@ -35,8 +35,9 @@ struct MonorepoApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ArcadeHomeView()
-                .font(.retroGameLargeTitle)
+            FlappyBird()
+//            ArcadeHomeView()
+//                .font(.retroGameLargeTitle)
         }
     }
 }
