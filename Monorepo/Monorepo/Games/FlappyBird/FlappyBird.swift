@@ -20,7 +20,7 @@ struct FlappyBird: View {
             ZStack {
                 // Infinite scrolling background
                 ZStack {
-                    decoration(for: colorScheme, offset: engine.bgOffset)
+                    decoration(for: (colorScheme == .dark ? "flappyBg-Dark" : "flappyBg-Lite"), offset: engine.bgOffset)
                 }
                 
                 // Pipes
@@ -119,34 +119,6 @@ struct FlappyBird: View {
             )
             .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: 5)
     }
-}
-
-// MARK: - Background Decorations
-/// Theme-aware ambient background elements.
-
-@ViewBuilder
-private func decoration(for scheme: ColorScheme, offset: CGFloat) -> some View {
-    let isDark = scheme == .dark
-
-    GeometryReader { geo in
-        let width = geo.size.width
-        
-        ZStack(alignment: .leading) {
-            // Image 1
-            Image(isDark ? "flappyBg-Dark" : "flappyBg-Lite")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: width, height: geo.size.height)
-                .offset(x: offset)
-            
-            Image(isDark ? "flappyBg-Dark" : "flappyBg-Lite")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: width, height: geo.size.height)
-                .offset(x: offset + width)
-        }
-    }
-    .ignoresSafeArea()
 }
 
 #Preview {

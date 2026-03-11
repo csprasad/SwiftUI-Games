@@ -29,6 +29,11 @@ final class DinoEngine {
     var velocity: CGFloat = 0
     var obstacles: [Obstacle] = []
     
+    // MARK: - Background Parallax
+    var bgOffset: CGFloat = 0
+    private let bgSpeed: CGFloat = 0.6      // Slower than pipes to create depth
+    let loopWidth: CGFloat = 400            // Width before seamless loop reset
+    
     // MARK: - Scoring
     /// Start time used to compute elapsed deciseconds.
     var startTime: ContinuousClock.Instant?
@@ -40,6 +45,10 @@ final class DinoEngine {
     private let baseSpeed: Double = -7.0
     private let gravity: CGFloat = 0.8
     private let jumpStrength: CGFloat = -14
+    
+    // MARK: - Dino collision stats
+    let dinoHalfWidth: CGFloat = 18
+    let cactusHalfWidth: CGFloat = 14
     
     // MARK: - Speed Scaling
     /// Increases difficulty based on real elapsed time.
@@ -74,17 +83,20 @@ final class DinoEngine {
         let fractionalSeconds = attoseconds / 1_000_000_000_000_000_000.0
         deciSeconds = Int((totalSeconds + fractionalSeconds) * 10)
         
+        // Background parallax loop
+        
         velocity += gravity
         dinoYOffset += velocity
         if dinoYOffset >= 0 { dinoYOffset = 0 }
         
         let currentMoveSpeed = baseSpeed * speedMultiplier
-        
+        bgOffset += CGFloat(currentMoveSpeed)
+
         for i in obstacles.indices {
             obstacles[i].xPos += CGFloat(currentMoveSpeed)
             
             // Tight collision window around dino X position.
-            if abs(obstacles[i].xPos - dinoXPosition) < 35 && dinoYOffset > -15 {
+            if abs(obstacles[i].xPos - dinoXPosition) < (dinoHalfWidth + cactusHalfWidth) && dinoYOffset > -35 {
                 endGame()
             }
             
@@ -119,6 +131,7 @@ final class DinoEngine {
         deciSeconds = 0
         dinoYOffset = 0
         velocity = 0
+        bgOffset = 0
         obstacles = [
             Obstacle(xPos: 350, count: 1),
             Obstacle(xPos: 650, count: 2)
