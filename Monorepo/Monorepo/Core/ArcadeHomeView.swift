@@ -11,7 +11,7 @@
 import SwiftUI
 
 struct ArcadeHomeView: View {
-    let games: [GameRoute] = [.commitSnake, .DinoRun, .Flappy, .Orbit_Dodge, .ComingSoon]
+    let games = GameRoute.allCases
     
     var body: some View {
         NavigationStack {

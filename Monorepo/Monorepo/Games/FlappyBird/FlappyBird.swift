@@ -65,7 +65,7 @@ struct FlappyBird: View {
                         .animation(.spring(duration: 0.2), value: engine.score)
                 }
                 .foregroundStyle(.primary.opacity(0.7))
-                .padding(.top, 100)
+                .padding(.top, 180)
                 .padding(.horizontal)
                 .frame(height: 100)
             }

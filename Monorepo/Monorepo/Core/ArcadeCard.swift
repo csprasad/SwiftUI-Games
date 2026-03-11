@@ -89,7 +89,6 @@ struct ArcadeCard: View {
     }
 }
 
-
 #Preview {
     ArcadeCard(game: GameRoute.Orbit_Dodge)
 }

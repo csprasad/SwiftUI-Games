@@ -17,12 +17,12 @@ struct GameInfo {
     var isAvailable: Bool = true
 }
 
-enum GameRoute: Hashable, Identifiable {
+enum GameRoute: Hashable, Identifiable, CaseIterable {
     case commitSnake
-    case ComingSoon
     case DinoRun
     case Flappy
     case Orbit_Dodge
+    case ComingSoon
     
     var id: Self { self }
     
@@ -85,6 +85,3 @@ enum GameRoute: Hashable, Identifiable {
         }
     }
 }
-
-
-
