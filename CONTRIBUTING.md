@@ -1,98 +1,120 @@
-# Contributing to SwiftUI Games
+# Contributing to SwiftUI Games 🎮
 
-Thank you for your interest in contributing! This guide will help you add new games and follow our development practices.
+Thanks for your interest in contributing! This guide covers everything you need to add a new game or improve the project.
 
-## 🎨 Adding New Games
+---
 
-Follow these steps to add a new game to the collection:
+## 🕹️ Adding a New Game
 
-### Step 1: Add Game Route Case
+The routing system is enum-driven — adding a game touches **3 files only**.
 
-Add a new case to the `GameRoute` enum in `GameRoute.swift`:
+### Step 1 — Add a route case
+
+In `GameRoute.swift`, add your case to the enum:
 
 ```swift
-enum GameRoute: Hashable, Identifiable {
+enum GameRoute: Hashable, Identifiable, CaseIterable {
     case commitSnake
-    case yourNewGame  // Add your game here
-    
-    var id: Self { self }
-    // ...
+    case yourNewGame  // 👈 add here
 }
 ```
 
-### Step 2: Provide Game Metadata
+That's it for the home screen — `ArcadeHomeView` uses `.allCases` so your game appears automatically.
 
-Add your game's information in the `info` computed property:
+---
+
+### Step 2 — Add game metadata
+
+Fill in the `info` property for your case:
 
 ```swift
 var info: GameInfo {
     switch self {
-    case .commitSnake:
-        GameInfo(
-            title: "Commit Snake",
-            note: "GitHub graph & Trackball controls",
-            icon: "point.topleft.down.curvedto.point.bottomright.up",
-            isAvailable: true
-        )
     case .yourNewGame:
         GameInfo(
-            title: "Your Game Title",
-            note: "Brief description of your game",
-            icon: "gamecontroller",  // SF Symbol name
-            isAvailable: true
+            title: "Your Game",
+            note: "One line description of the game.",
+            icon: "gamecontroller",  // SF Symbol
+            isAvailable: true        // false = shows as Coming Soon
         )
     }
 }
 ```
 
-**GameInfo Properties:**
-- `title`: Display name of your game
-- `note`: Short description (1-2 lines)
-- `icon`: SF Symbol name for the icon
-- `isAvailable`: Set to `true` when ready, `false` for "Coming Soon"
+---
 
-### Step 3: Implement Game View
+### Step 3 — Wire up the destination
 
-Add your game's view in the `destinationView()` method:
+Add your view to `destinationView()`:
 
 ```swift
 @ViewBuilder
 private func destinationView() -> some View {
     switch self {
-    case .commitSnake:
-        CommitSnakeGame()
     case .yourNewGame:
-        YourGameView()  // Your game view
+        YourGameView()
     }
 }
 ```
 
-### Step 4: Register in Home View
+---
 
-Add your game to the games array in `ArcadeHomeView.swift`:
+### Step 4 — Build your game
+
+Create a folder under `Games/YourGame/` with two files:
+
+```
+Games/
+└── YourGame/
+    ├── YourGameEngine.swift   // all logic, physics, state
+    └── YourGameView.swift     // SwiftUI view only
+```
+
+Follow the engine/view pattern every game uses:
 
 ```swift
-struct ArcadeHomeView: View {
-    let games: [GameRoute] = [
-        .commitSnake,
-        .yourNewGame  // Add here
-    ]
-    // ...
+// YourGameEngine.swift
+@Observable @MainActor
+final class YourGameEngine {
+    var state: GameState = .idle
+
+    func handleButtonTap() {
+        switch state {
+        case .idle, .gameOver: restart()
+        case .playing: /* game action */
+        }
+    }
+
+    func update() {
+        guard state == .playing else { return }
+        // physics, collision, scoring
+    }
+
+    private func restart() {
+        state = .playing
+    }
 }
 ```
 
-### Step 5: Create Your Game View
-
-Create a new SwiftUI view file for your game:
-
 ```swift
-import SwiftUI
-
+// YourGameView.swift
 struct YourGameView: View {
+    @State private var engine = YourGameEngine()
+
     var body: some View {
-        VStack {
-            Text("Your Game!")
-            // Your game implementation
+        ZStack { ... }
+        .onTapGesture { engine.handleButtonTap() }
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 16_000_000) // 60 FPS
+                engine.update()
+            }
+        }
+        .overlay(alignment: engine.state == .idle ? .bottom : .top) {
+            if engine.state == .idle || engine.state == .gameOver {
+                GameOverView(state: engine.state)
+                    .padding(engine.state == .idle ? .bottom : .top, 60)
+            }
         }
     }
 }
@@ -102,144 +124,57 @@ struct YourGameView: View {
 }
 ```
 
-## 📝 Code Style Guidelines
+---
 
-### Swift Style
+## ✅ Game Checklist
 
-- **Naming**: Use clear, descriptive names
-  ```swift
-  // Good
-  var playerScore: Int
-  func calculateMovement()
-  
-  // Avoid
-  var ps: Int
-  func calc()
-  ```
+Before submitting, make sure your game:
 
-- **Spacing**: Use consistent spacing
-  ```swift
-  // Good
-  if isGameOver {
-      resetGame()
-  }
-  
-  // Avoid
-  if isGameOver{
-    resetGame()
-  }
-  ```
+- Has a working `idle -> playing -> gameOver` state machine
+- Runs at 60 FPS with no dropped frames
+- Has a restart mechanism
+- Uses `GameOverView` for idle and game over overlays
+- Handles safe area insets properly
+- Includes a `#Preview`
 
-- **SwiftUI Views**: Keep views small and composable
-  ```swift
-  // Good - Small, focused views
-  struct GameHeader: View {
-      var body: some View {
-          Text("Game Title")
-      }
-  }
-  
-  struct GameView: View {
-      var body: some View {
-          VStack {
-              GameHeader()
-              GameBoard()
-              GameControls()
-          }
-      }
-  }
-  ```
+---
 
-### SwiftUI Best Practices
+## 📝 Code Style
 
-1. **State Management**
-   ```swift
-   @State private var score = 0
-   @StateObject private var gameEngine = GameEngine()
-   ```
+- **Engine vs View** — keep all logic in the engine, views are display only
+- **Naming** — `GameEngine`, `GameView`, not abbreviations
+- **State** — use `@Observable` on engines, `@State` in views
+- **Views** — aim to keep views under 100 lines, extract subviews where needed
+- **No timers** — use `Task` + `async/await` for game loops, not `Timer` or `Combine`
 
-2. **View Modifiers**
-   ```swift
-   Text("Score: \(score)")
-       .font(.headline)
-       .foregroundStyle(.primary)
-   ```
+---
 
-3. **Previews** (Optional)
-   ```swift
-   #Preview {
-       YourGameView()
-   }
-   ```
+## 🐛 Reporting Bugs
 
-4. **Extract Subviews**
-   - If a view gets longer than ~100 lines, consider breaking it into smaller components
-   - Use `@ViewBuilder` for conditional views
-
-### Architecture Guidelines
-
-- **Keep views small**: Aim for views under 100 lines
-- **Separate concerns**: Game logic should be in separate files/classes
-- **Use meaningful names**: View names should end with `View`
-- **Follow SwiftUI patterns**: Use `@State`, `@Binding`, `@StateObject` appropriately
-
-## 🎮 Game Requirements
-
-Your game should:
-- ✅ Work in portrait and landscape (if applicable)
-- ✅ Handle safe area insets properly
-- ✅ Include clear instructions or intuitive controls
-- ✅ Have a reset/restart mechanism
-- ✅ Be performance-optimized (60 FPS target)
-- ✅ Include a preview for development
-
-## 🐛 Bug Reports
-
-When reporting bugs, please include:
-- iOS version
-- Device model
+Please include:
+- iOS version + device model
 - Steps to reproduce
-- Expected behavior
-- Actual behavior
-- Screenshots/videos if applicable
+- Expected vs actual behaviour
+- Screenshot or screen recording if possible
 
-## 💡 Feature Requests
-
-For new game ideas or features:
-- Describe the game concept
-- Explain the controls
-- Mention any technical considerations
-- Reference similar games if applicable
+---
 
 ## 🔄 Pull Request Process
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-game`)
-3. Commit your changes (`git commit -m 'Add amazing game'`)
-4. Push to the branch (`git push origin feature/amazing-game`)
-5. Open a Pull Request
+1. Fork the repo
+2. Create a branch — `git checkout -b game/your-game-name`
+3. Commit — `git commit -m 'Add YourGame'`
+4. Push — `git push origin game/your-game-name`
+5. Open a PR with a GIF of the game in action
 
-### PR Guidelines
-
-- Clear title and description
-- Reference any related issues
-- Include screenshots/GIFs of new games
-- Ensure code follows style guidelines
-- Test on multiple devices if possible
+---
 
 ## 📚 Resources
 
 - [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
+- [SF Symbols](https://developer.apple.com/sf-symbols/)
 - [Swift API Design Guidelines](https://swift.org/documentation/api-design-guidelines/)
-- [SF Symbols Browser](https://developer.apple.com/sf-symbols/)
-
-## ❓ Questions?
-
-Feel free to open an issue for:
-- Clarification on contribution process
-- Technical questions
-- Suggestions for improvement
 
 ---
 
-Thank you for contributing to SwiftUI Games! 🎮
+Thank you for contributing! 🕹️
