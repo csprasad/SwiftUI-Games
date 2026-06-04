@@ -42,7 +42,10 @@ final class OrbitDodgeEngine {
     var enemyRadius: CGFloat { enemySize / 2 }
 
     // MARK: - Core Game Loop
-    /// Advances simulation by delta time.
+    /// Advances the game simulation by a single time step.
+    /// 
+    /// Updates player rotation, advances enemies toward the center, spawns new enemies when appropriate, checks for collisions (ending the game on impact), and increments the score.
+    /// - Parameter dt: Time interval, in seconds, to advance the simulation.
     func update(dt: CGFloat) {
         // Halt logic if not playing or layout not ready
         guard state == .playing, canvasSize != .zero else { return }
@@ -79,7 +82,9 @@ final class OrbitDodgeEngine {
     }
 
     // MARK: - Physics & Collision
-    /// Circular collision check using distance between centers.
+    /// Detects whether the player's circular hit area intersects any enemy's circular hit area.
+    /// - Parameter center: The center point of the playfield/orbit coordinate system used to compute positions.
+    /// - Returns: `true` if any enemy's circle overlaps the player's circle, `false` otherwise.
     private func checkCollision(center: CGPoint) -> Bool {
         let playerPos = CGPoint(
             x: center.x + cos(angle) * orbitRadius,
@@ -101,7 +106,7 @@ final class OrbitDodgeEngine {
     }
 
     // MARK: - Lifecycle & Input
-    /// Handles tap depending on current state.
+    /// Handles a user tap: starts a new game when the engine is idle or after game over, and reverses the player’s orbital direction while playing.
     func tapAction() {
         switch state {
         case .idle, .gameOver:

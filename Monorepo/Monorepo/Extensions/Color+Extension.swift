@@ -29,6 +29,11 @@ extension Color {
 
 // MARK: - Color Blend
 extension Color {
+    /// Creates a color by linearly interpolating between the receiver and another color.
+    /// - Parameters:
+    ///   - other: The color to blend with the receiver.
+    ///   - amount: Interpolation factor between 0 and 1 where 0 yields the receiver and 1 yields `other`.
+    /// - Returns: A color whose red, green, blue, and opacity channels are the linear interpolation of the two colors according to `amount`.
     func blend(with other: Color, amount: Double = 0.5) -> Color {
         let uiColor1 = UIColor(self)
         let uiColor2 = UIColor(other)

@@ -26,6 +26,10 @@ final class CommitSnakeEngine {
     var currentDirection: Direction = .right
     var state: GameState = .idle
 
+    /// Handles the primary game button tap to advance the game state.
+    /// - When `state` is `.idle`, starts the game (`state = .playing`).
+    /// - When `state` is `.gameOver`, resets the game and starts playing.
+    /// - When `state` is `.playing`, no action is taken.
     func handleButtonTap() {
         switch state {
         case .idle:
@@ -38,6 +42,9 @@ final class CommitSnakeEngine {
         }
     }
 
+    /// Advance the snake one cell in its current direction and update the game state accordingly.
+    /// 
+    /// If the game is not in the `.playing` state this method does nothing. The snake's head is moved one cell in `currentDirection`, wrapping around grid edges. If the new head collides with the snake's body, the game transitions to `.gameOver`. If the new head lands on the food, the snake grows and new food is spawned; if that growth fills the entire grid the game transitions to `.gameOver`. If the new head does not land on food, the tail segment is removed to keep the snake's length constant.
     func move() {
         guard state == .playing else { return }
 
@@ -75,12 +82,18 @@ final class CommitSnakeEngine {
         }
     }
 
+    /// Resets the game state to its initial configuration.
+    /// 
+    /// Restores the snake to its starting segments, places food at the initial index, and sets the movement direction to `.right`.
+    /// - Note: The snake is set to `[45, 44, 43]`, `foodPosition` to `100`, and `currentDirection` to `.right`.
     private func resetGame() {
         snakeBody = [45, 44, 43]
         foodPosition = 100
         currentDirection = .right
     }
 
+    /// Places food at a random unoccupied grid cell.
+    /// - Note: Updates `foodPosition` with an index that is not currently occupied by `snakeBody`.
     private func spawnFood() {
         let occupied = Set(snakeBody)
         var candidate: Int

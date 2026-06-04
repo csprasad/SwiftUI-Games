@@ -56,6 +56,8 @@ enum GameRoute: Hashable, Identifiable, CaseIterable {
         }
     }
 
+    /// Produces the destination view for this game route and configures navigation UI.
+    /// - Returns: A view presenting the route's destination with an inline navigation bar title and a centered toolbar title using the route's `info.title` styled with `.retroGameTitle3` and `ThemeGradient.accentVertical`.
     @ViewBuilder
     func destination() -> some View {
         destinationView()
@@ -69,6 +71,10 @@ enum GameRoute: Hashable, Identifiable, CaseIterable {
             }
     }
 
+    /// Provide the destination view for this route.
+    /// 
+    /// Maps each `GameRoute` case to the corresponding game view; unavailable routes present a "Coming Soon!" placeholder.
+    /// - Returns: A view to present for the route (the game view for available routes or a "Coming Soon!" text for unavailable routes).
     @ViewBuilder
     private func destinationView() -> some View {
         switch self {

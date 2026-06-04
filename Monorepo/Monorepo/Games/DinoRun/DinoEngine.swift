@@ -57,7 +57,9 @@ final class DinoEngine {
         return 1.0 + (Double(actualSeconds / 10) * 0.2)
     }
 
-    // MARK: - Input
+    /// Process a primary game button tap, either starting/restarting the run or making the dino jump.
+    /// 
+    /// If the game is in `.idle` or `.gameOver`, a new run is started. If the game is `.playing`, the dino performs a jump.
     func handleButtonTap() {
         switch state {
         case .idle, .gameOver:
@@ -67,13 +69,18 @@ final class DinoEngine {
         }
     }
 
+    /// Initiates the dino's jump when it is on the ground.
+    /// 
+    /// Sets the vertical velocity to the configured jump strength only if the dino's vertical offset indicates it is grounded; has no effect while airborne.
     private func jump() {
         guard dinoYOffset == 0 else { return }
         velocity = jumpStrength
     }
 
     // MARK: - Core Game Loop
-    /// Fixed-step update driven by view task loop.
+    /// Advances the game simulation from `startTime` to `currentInstant`, updating timers, physics, background scroll, obstacle positions, collision detection, and obstacle recycling.
+    /// - Parameters:
+    ///   - currentInstant: The current time instant used to compute elapsed game time and drive the fixed-step update.
     func update(currentInstant: ContinuousClock.Instant) {
         guard state == .playing, let start = startTime else { return }
 
@@ -116,7 +123,8 @@ final class DinoEngine {
     }
 
     // MARK: - Lifecycle
-    /// Ends run and persists high score.
+    /// Ends the current run and transitions the engine to the game-over state.
+    /// If the current decisecond score exceeds the stored high score, updates `highScore` and persists it to `UserDefaults` using the key "dino_high_score".
     private func endGame() {
         state = .gameOver
         if deciSeconds > highScore {
@@ -125,7 +133,9 @@ final class DinoEngine {
         }
     }
 
-    /// Resets engine to initial running state.
+    /// Starts a new run by resetting the timer, score, physics, background, and obstacles, and entering the playing state.
+    /// 
+    /// Resets `startTime` to now; sets `deciSeconds`, `dinoYOffset`, `velocity`, and `bgOffset` to zero; initializes two obstacles at x positions 350 and 650 with counts 1 and 2; and sets `state` to `.playing`.
     private func restart() {
         startTime = .now
         deciSeconds = 0

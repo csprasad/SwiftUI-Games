@@ -67,6 +67,11 @@ struct CommitSnakeGame: View {
         }
     }
 
+    /// Handle a user trigger to start or restart the game.
+    /// 
+    /// If the engine is `.idle`, starts the game by invoking `engine.handleButtonTap()`.
+    /// If the engine is `.gameOver`, restarts the game via `engine.handleButtonTap()` and
+    /// increments `gameLoopID` to force recreation of the async game loop task.
     private func handleTrigger() {
         if engine.state == .idle {
             engine.handleButtonTap()

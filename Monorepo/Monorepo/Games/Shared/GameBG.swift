@@ -12,7 +12,11 @@
 import SwiftUI
 
 // MARK: - Background Decorations
-/// Theme-aware ambient background elements.
+/// Creates a horizontally repeating background decoration from the specified image, offsettable along the x axis.
+/// - Parameters:
+///   - imageString: The name of the image asset to use for the decoration.
+///   - offset: Horizontal offset in points; the offset is wrapped to the view's width so the pattern repeats seamlessly.
+/// - Returns: A view that fills the available area with the image tiled and mirrored horizontally, extending into system safe areas.
 
 @ViewBuilder
 func decoration(for imageString: String, offset: CGFloat) -> some View {

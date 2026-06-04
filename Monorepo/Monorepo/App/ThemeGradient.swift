@@ -28,7 +28,10 @@ enum ThemeGradient {
         endPoint: .trailing
     )
 
-    // MARK: - Pipe dark gradient colors
+    /// Produces a horizontal themed gradient built from discrete color stops suitable for light or dark color schemes.
+    /// - Parameters:
+    ///   - scheme: The current `ColorScheme` used to select the light or dark palette.
+    /// - Returns: A `LinearGradient` composed of explicit color stops from leading to trailing; uses a lighter green palette when `scheme` is `.light`, otherwise uses a darker green/brown palette.
     static func pixelPipeGradient(for scheme: ColorScheme) -> LinearGradient {
         let isLight = scheme == .light
 

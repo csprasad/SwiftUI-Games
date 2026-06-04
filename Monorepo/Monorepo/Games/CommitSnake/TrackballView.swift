@@ -47,6 +47,10 @@ struct TrackballView: View {
             )
     }
 
+    /// Update the engine's current direction based on a drag translation.
+    /// 
+    /// If the engine is not in the `.playing` state the call is ignored. If the engine was `.idle` or `.gameOver`, `onFirstMove()` is invoked. The proposed direction is chosen from the dominant axis of `translation` (horizontal → left/right, vertical → up/down) and mapped from the translation's sign. Opposite-direction (180°) reversals are blocked. If the direction actually changes, `feedbackTrigger` is incremented to produce sensory feedback.
+    /// - Parameter translation: The drag translation (in points) used to determine the intended direction.
     private func updateDirection(from translation: CGSize) {
         guard engine.state == .playing else { return }
 

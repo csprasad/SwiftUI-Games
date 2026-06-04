@@ -91,7 +91,11 @@ struct FlappyBird: View {
     }
 
     // MARK: - Pipe View
-    /// Styled pipe obstacle.
+    /// Creates a vertical pipe obstacle view composed of a body and a decorative cap.
+    /// - Parameters:
+    ///   - height: The total height of the pipe including the cap (the body height is `height - 25`).
+    ///   - isTopPipe: When `true`, places the cap at the top of the pipe; when `false`, places the cap at the bottom.
+    /// - Returns: A view containing the pipe body filled with the pixel pipe gradient and a cap positioned according to `isTopPipe`.
     @ViewBuilder
     private func pipeView(height: CGFloat, isTopPipe: Bool) -> some View {
         VStack(spacing: 0) {

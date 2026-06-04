@@ -89,6 +89,9 @@ private struct Stone: Identifiable {
     let x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat
 }
 
+/// Renders the ground strip used by the game, including a top baseline and a horizontally scrolling field of small stones.
+/// - Parameter offset: Horizontal scroll offset (in points) applied to stone positions; values outside the view width wrap around horizontally.
+/// - Returns: A view containing the ground baseline and a row of stones that scroll horizontally according to `offset`.
 private func dinoGround(offset: CGFloat) -> some View {
     VStack(spacing: 2) {
         // Top solid line

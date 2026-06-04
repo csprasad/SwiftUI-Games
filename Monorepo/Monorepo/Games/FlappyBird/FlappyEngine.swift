@@ -52,7 +52,7 @@ final class FlappyEngine {
     var floorLimit: CGFloat = 350
 
     // MARK: - Interaction Handler
-    /// Handles tap input depending on game state.
+    /// Handles a user tap by starting or restarting the game when in `idle` or `gameOver`, or applying the jump impulse when `playing`.
     func handleTap() {
         switch state {
         case .idle, .gameOver:
@@ -63,7 +63,9 @@ final class FlappyEngine {
     }
 
     // MARK: - Core Game Loop
-    /// Frame update (~60 FPS).
+    /// Advances the game simulation by one frame when the engine is in the playing state.
+    /// 
+    /// Integrates vertical physics for the bird (applies gravity, clamps fall speed, and updates position), checks for floor collision and ends the game when crossed, advances background parallax, and processes each pipe: moves it left, awards a score and light haptic when the bird passes, performs an approximate hitbox collision check (ending the game on collision), and recycles pipes that moved off-screen by repositioning them and randomizing their gap top. This method does nothing unless the game state is `.playing`.
     func update() {
         guard state == .playing else { return }
 
@@ -118,7 +120,9 @@ final class FlappyEngine {
 
     // MARK: - Game Lifecycle
 
-    /// Resets game state and starts new session.
+    /// Reset the game session to its initial playing state.
+    /// 
+    /// Resets the bird position and motion (`birdY`, `velocity`), clears the current score and background offset, reinitializes the active pipes to the starting positions, and sets the game `state` to `.playing`.
     private func restart() {
         birdY = 0
         velocity = 0
@@ -133,7 +137,9 @@ final class FlappyEngine {
         state = .playing
     }
 
-    /// Handles game over state and score persistence.
+    /// Ends the current game session by transitioning to the game-over state and handling end-of-game side effects.
+    /// 
+    /// If the current score exceeds the stored high score, updates `highScore` and persists it in `UserDefaults` under the key `"flappy_high_score"`. Also emits an error-style haptic notification.
     private func endGame() {
         state = .gameOver
 

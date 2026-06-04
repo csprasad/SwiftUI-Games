@@ -11,27 +11,39 @@
 import SwiftUI
 
 extension Font {
-    // Honk with different sizes
+    /// Creates a font using the "Honk-Regular" custom typeface.
+    /// - Parameters:
+    ///   - size: The font size in points. Defaults to `17`.
+    /// - Returns: A `Font` configured with the "Honk-Regular" font at the specified size.
     static func honk(size: CGFloat = 17) -> Font {
         .custom("Honk-Regular", size: size)
     }
 
-    // Bungee with different sizes
+    /// Creates a Bungee font at the specified size.
+    /// - Parameters:
+    ///   - size: The font size in points (default: 17).
+    /// - Returns: A Font using the "Bungee-Regular" typeface at the provided size.
     static func bungee(size: CGFloat = 17) -> Font {
         .custom("Bungee-Regular", size: size)
     }
 
-    // Bungee Spice with different sizes
+    /// Create the "BungeeSpice-Regular" custom font at the specified size.
+    /// - Parameter size: The font size in points. Defaults to 17.
+    /// - Returns: A `Font` using the "BungeeSpice-Regular" font at the requested size.
     static func bungeeSpice(size: CGFloat = 17) -> Font {
         .custom("BungeeSpice-Regular", size: size)
     }
 
-    // Retro with different sizes
+    /// Creates the `RetroGaming` custom font at the specified size.
+    /// - Parameter size: The font size in points. Default is 17.
+    /// - Returns: A `Font` configured with the `"RetroGaming"` font family at `size`.
     static func retroGaming(size: CGFloat = 17) -> Font {
         .custom("RetroGaming", size: size)
     }
 
-    // Retro-lite with different sizes
+    /// Returns the "rainyhearts" custom font configured at the given size.
+    /// - Parameter size: Font size in points (default is 17).
+    /// - Returns: A `Font` using the "rainyhearts" font family at the specified size.
     static func rainyHearts(size: CGFloat = 17) -> Font {
         .custom("rainyhearts", size: size)
     }
