@@ -12,7 +12,7 @@ import SwiftUI
 
 struct ArcadeHomeView: View {
     let games = GameRoute.allCases
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -23,23 +23,23 @@ struct ArcadeHomeView: View {
                             .font(.retroGameLargeTitle)
                             .kerning(4)
                             .foregroundStyle(ThemeGradient.accentVertical)
-                        
+
                         Image(systemName: "dice")
                             .font(.retroGameTitle2)
                             .foregroundStyle(ThemeGradient.accentVertical)
                     }
-                    
+
                     Text("ARCADE GAMES")
                         .font(.retroGaming(size: 13))
                         .foregroundStyle(.orange.opacity(0.9))
-                    
+
                     Rectangle()
                         .frame(maxHeight: 1)
                         .foregroundStyle(ThemeGradient.accentVertical)
                 }
                 .padding(.horizontal, 30)
                 .padding(.vertical)
-                
+
                 // Game List
                 ScrollView {
                     VStack(alignment: .leading, spacing: 12) {

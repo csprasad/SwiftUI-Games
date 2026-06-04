@@ -8,7 +8,6 @@
 /// `Instagram` : ``@csprasad.ios`` • `X` : ``@csprasad_ios`` • `Github` : ``@csprasad``
 ///
 
-
 import SwiftUI
 import Observation
 
@@ -29,27 +28,30 @@ final class OrbitDodgeEngine {
     var enemies: [Enemy] = []
     /// Canvas size synced from the View.
     var canvasSize: CGSize = .zero
-    
+
     // MARK: - Constants & Tuning
     let orbitRadius: CGFloat = 120
     let playerSize: CGFloat = 40
     let enemySize: CGFloat = 30
     let rotationSpeed: CGFloat = 2.2
     let enemySpeed: CGFloat = 180
-    
+
     // MARK: - Computed Properties
     /// Radii used for circular collision detection.
     var playerRadius: CGFloat { playerSize / 2 }
     var enemyRadius: CGFloat { enemySize / 2 }
 
     // MARK: - Core Game Loop
-    /// Advances simulation by delta time.
+    /// Advances the game simulation by a single time step.
+    /// 
+    /// Updates player rotation, advances enemies toward the center, spawns new enemies when appropriate, checks for collisions (ending the game on impact), and increments the score.
+    /// - Parameter dt: Time interval, in seconds, to advance the simulation.
     func update(dt: CGFloat) {
         // Halt logic if not playing or layout not ready
         guard state == .playing, canvasSize != .zero else { return }
 
         angle += dt * rotationSpeed * direction
-        
+
         // CompactMap keeps array bounded by removing enemies past center.
         enemies = enemies.compactMap { enemy in
             var updated = enemy
@@ -80,7 +82,9 @@ final class OrbitDodgeEngine {
     }
 
     // MARK: - Physics & Collision
-    /// Circular collision check using distance between centers.
+    /// Detects whether the player's circular hit area intersects any enemy's circular hit area.
+    /// - Parameter center: The center point of the playfield/orbit coordinate system used to compute positions.
+    /// - Returns: `true` if any enemy's circle overlaps the player's circle, `false` otherwise.
     private func checkCollision(center: CGPoint) -> Bool {
         let playerPos = CGPoint(
             x: center.x + cos(angle) * orbitRadius,
@@ -95,14 +99,14 @@ final class OrbitDodgeEngine {
 
             // hypot() is numerically stable for distance calculation.
             let dist = hypot(enemyPos.x - playerPos.x, enemyPos.y - playerPos.y)
-            
+
             if dist < (playerRadius + enemyRadius) { return true }
         }
         return false
     }
-    
+
     // MARK: - Lifecycle & Input
-    /// Handles tap depending on current state.
+    /// Handles a user tap: starts a new game when the engine is idle or after game over, and reverses the player’s orbital direction while playing.
     func tapAction() {
         switch state {
         case .idle, .gameOver:
