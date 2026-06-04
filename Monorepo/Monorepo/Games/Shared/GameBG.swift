@@ -19,7 +19,7 @@ func decoration(for imageString: String, offset: CGFloat) -> some View {
     GeometryReader { geo in
         let width = geo.size.width
         let normalizedOffset = offset.truncatingRemainder(dividingBy: width)
-        
+
         ZStack(alignment: .leading) {
             // Normal image
             Image(imageString)
@@ -27,7 +27,7 @@ func decoration(for imageString: String, offset: CGFloat) -> some View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: width, height: geo.size.height)
                 .offset(x: normalizedOffset)
-            
+
             // Mirrored image — right edge stitches to right edge of first
             Image(imageString)
                 .resizable()
@@ -35,7 +35,7 @@ func decoration(for imageString: String, offset: CGFloat) -> some View {
                 .frame(width: width, height: geo.size.height)
                 .scaleEffect(x: -1, y: 1)
                 .offset(x: normalizedOffset + width)
-            
+
             // Third image (normal again) to cover the gap after mirrored
 //            Image(imageString)
 //                .resizable()

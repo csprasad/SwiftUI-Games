@@ -8,7 +8,6 @@
 /// `Instagram` : ``@csprasad.ios`` • `X` : ``@csprasad_ios`` • `Github` : ``@csprasad``
 ///
 
-
 import SwiftUI
 import Observation
 
@@ -29,14 +28,14 @@ final class OrbitDodgeEngine {
     var enemies: [Enemy] = []
     /// Canvas size synced from the View.
     var canvasSize: CGSize = .zero
-    
+
     // MARK: - Constants & Tuning
     let orbitRadius: CGFloat = 120
     let playerSize: CGFloat = 40
     let enemySize: CGFloat = 30
     let rotationSpeed: CGFloat = 2.2
     let enemySpeed: CGFloat = 180
-    
+
     // MARK: - Computed Properties
     /// Radii used for circular collision detection.
     var playerRadius: CGFloat { playerSize / 2 }
@@ -49,7 +48,7 @@ final class OrbitDodgeEngine {
         guard state == .playing, canvasSize != .zero else { return }
 
         angle += dt * rotationSpeed * direction
-        
+
         // CompactMap keeps array bounded by removing enemies past center.
         enemies = enemies.compactMap { enemy in
             var updated = enemy
@@ -95,12 +94,12 @@ final class OrbitDodgeEngine {
 
             // hypot() is numerically stable for distance calculation.
             let dist = hypot(enemyPos.x - playerPos.x, enemyPos.y - playerPos.y)
-            
+
             if dist < (playerRadius + enemyRadius) { return true }
         }
         return false
     }
-    
+
     // MARK: - Lifecycle & Input
     /// Handles tap depending on current state.
     func tapAction() {

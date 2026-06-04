@@ -19,13 +19,13 @@ struct GameInfo {
 
 enum GameRoute: Hashable, Identifiable, CaseIterable {
     case commitSnake
-    case DinoRun
-    case Flappy
-    case Orbit_Dodge
-    case ComingSoon
-    
+    case dinoRun
+    case flappyBird
+    case orbitDodge
+    case comingSoon
+
     var id: Self { self }
-    
+
     var info: GameInfo {
         switch self {
         case .commitSnake:
@@ -33,22 +33,22 @@ enum GameRoute: Hashable, Identifiable, CaseIterable {
                     note: "Grow your green streak, eat the cherry.",
                     icon: "point.topleft.down.curvedto.point.bottomright.up",
                     isAvailable: true)
-        case .DinoRun:
+        case .dinoRun:
             GameInfo(title: "Dino Run",
                      note: "Classic Chrome offline game.",
                      icon: "figure.gymnastics",
                      isAvailable: true)
-        case .Flappy:
+        case .flappyBird:
             GameInfo(title: "Flappy Bird",
                      note: "Tap to flap, dodge the pipes.",
                      icon: "bird.fill",
                      isAvailable: true)
-        case .Orbit_Dodge:
+        case .orbitDodge:
             GameInfo(title: "Orbit Dodge",
                      note: "Dodge incoming comets. Tap to reverse orbit.",
                      icon: "moonphase.full.moon",
                      isAvailable: true)
-        case .ComingSoon:
+        case .comingSoon:
             GameInfo(title: "Mini Game",
                     note: "Coming soon...",
                     icon: "gamecontroller",
@@ -68,19 +68,19 @@ enum GameRoute: Hashable, Identifiable, CaseIterable {
                 }
             }
     }
-    
+
     @ViewBuilder
     private func destinationView() -> some View {
         switch self {
         case .commitSnake:
             CommitSnakeGame()
-        case .DinoRun:
+        case .dinoRun:
             DinoRunView()
-        case .Flappy:
+        case .flappyBird:
             FlappyBird()
-        case .Orbit_Dodge:
+        case .orbitDodge:
             OrbitDodge()
-        case .ComingSoon:
+        case .comingSoon:
             Text("Coming Soon!")
         }
     }

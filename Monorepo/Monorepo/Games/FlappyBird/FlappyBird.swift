@@ -22,18 +22,18 @@ struct FlappyBird: View {
                 ZStack {
                     decoration(for: (colorScheme == .dark ? "flappyBg-Dark" : "flappyBg-Lite"), offset: engine.bgOffset)
                 }
-                
+
                 // Pipes
                 ForEach(engine.pipes) { pipe in
                     Group {
                         pipeView(height: 500, isTopPipe: true)
                             .offset(x: pipe.xPos, y: pipe.gapTop - 250)
-                        
+
                         pipeView(height: 500, isTopPipe: false)
                             .offset(x: pipe.xPos, y: pipe.gapTop + 420)
                     }
                 }
-                
+
                 // Bird
                 Text("🐤")
                     .font(.system(size: 50))
@@ -44,7 +44,7 @@ struct FlappyBird: View {
             .drawingGroup()
             .clipped()
             .border(width: 1, edges: [.top, .bottom], color: .secondary.opacity(0.2))
-            
+
             // Floor collision boundary derived from geometry
             .onGeometryChange(for: CGFloat.self) { proxy in
                 proxy.size.height / 2
@@ -56,9 +56,9 @@ struct FlappyBird: View {
                 HStack(alignment: .top) {
                     Text("HI \(engine.highScore)")
                         .font(.retroGameTitle)
-                    
+
                     Spacer()
-                    
+
                     Text("\(engine.score)")
                         .font(.retroGameTitle)
                         .contentTransition(.numericText())
@@ -80,7 +80,7 @@ struct FlappyBird: View {
         .ignoresSafeArea()
         .contentShape(Rectangle())
         .onTapGesture { engine.handleTap() }
-        
+
         // Fixed-step game loop (~60 FPS)
         .task {
             while !Task.isCancelled {
@@ -89,7 +89,7 @@ struct FlappyBird: View {
             }
         }
     }
-    
+
     // MARK: - Pipe View
     /// Styled pipe obstacle.
     @ViewBuilder
@@ -97,12 +97,12 @@ struct FlappyBird: View {
         VStack(spacing: 0) {
             // Cap for bottom pipes
             if !isTopPipe { pipeCap }
-                        
+
             // Pipe
             Rectangle()
                 .fill(ThemeGradient.pixelPipeGradient(for: colorScheme))
                 .frame(width: 50, height: height - 25)
-            
+
             // Cap for top pipes
             if isTopPipe { pipeCap }
         }

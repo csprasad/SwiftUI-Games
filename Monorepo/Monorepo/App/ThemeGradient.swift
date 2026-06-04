@@ -4,7 +4,7 @@
 //
 /// Created by `C S Prasad` on `11/02/26`
 ///
-///`iOS • SwiftUI • Creative Coding`
+/// `iOS • SwiftUI • Creative Coding`
 ///
 /// ### Social
 /// `Instagram` : ``@csprasad.ios`` • `X` : ``@csprasad_ios`` • `Github` : ``@csprasad``
@@ -13,7 +13,7 @@
 import SwiftUI
 
 enum ThemeGradient {
-    
+
     // MARK: - Verticle orange accent colors
     static let accentVertical = LinearGradient(
         colors: [.yellow, .orange, .red],
@@ -27,11 +27,11 @@ enum ThemeGradient {
         startPoint: .leading,
         endPoint: .trailing
     )
-    
+
     // MARK: - Pipe dark gradient colors
     static func pixelPipeGradient(for scheme: ColorScheme) -> LinearGradient {
         let isLight = scheme == .light
-        
+
         let darkColors = LinearGradient(
             stops: [
                 .init(color: Color(hex: "391D2A"), location: 0.0),    // Darkest Left Edge
@@ -52,7 +52,7 @@ enum ThemeGradient {
             startPoint: .leading,
             endPoint: .trailing
         )
-        
+
         let liteColors = LinearGradient(
             stops: [
                 .init(color: Color(hex: "5A3D4A"), location: 0.0),    // Lighter Edge
@@ -73,7 +73,7 @@ enum ThemeGradient {
             startPoint: .leading,
             endPoint: .trailing
         )
-        
+
         return isLight ? liteColors : darkColors
     }
 }

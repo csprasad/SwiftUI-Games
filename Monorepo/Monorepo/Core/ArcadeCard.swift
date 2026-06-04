@@ -27,13 +27,13 @@ struct ArcadeCard: View {
                         )
                     )
                     .shadow(color: .orange, radius: 50)
-                
+
                 // Subtitle
                 Text(game.info.note)
                     .font(.retroGameBody)
                     .foregroundStyle(.blue)
                     .layoutPriority(1)
-                
+
                 Rectangle()
                     .stroke(
                         LinearGradient(
@@ -46,7 +46,7 @@ struct ArcadeCard: View {
                     .frame(width: 208, height: 2)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             Image(systemName: "play.fill")
                 .font(.retroGameTitle2)
                 .foregroundStyle(
@@ -57,7 +57,7 @@ struct ArcadeCard: View {
                     )
                 )
                 .padding(.trailing, 5)
-                
+
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
@@ -90,5 +90,5 @@ struct ArcadeCard: View {
 }
 
 #Preview {
-    ArcadeCard(game: GameRoute.Orbit_Dodge)
+    ArcadeCard(game: GameRoute.orbitDodge)
 }

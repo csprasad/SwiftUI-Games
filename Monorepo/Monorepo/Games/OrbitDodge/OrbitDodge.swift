@@ -41,15 +41,18 @@ struct OrbitDodge: View {
                     x: center.x + cos(engine.angle) * engine.orbitRadius,
                     y: center.y + sin(engine.angle) * engine.orbitRadius
                 )
-                
+
                 // drawLayer isolates transforms so rotation/scale affect only this sprite.
                 context.drawLayer { subContext in
                     subContext.translateBy(x: pPos.x, y: pPos.y)
                     subContext.rotate(by: Angle(radians: engine.angle + .pi/2))
                     subContext.scaleBy(x: engine.direction, y: 1)
-                    
-                    let s = engine.playerSize
-                    subContext.draw(playerImg, in: CGRect(x: -s/2, y: -s/2, width: s, height: s))
+
+                    let playerSize = engine.playerSize
+                    subContext.draw(playerImg, in: CGRect(x: -playerSize/2,
+                                                          y: -playerSize/2,
+                                                          width: playerSize,
+                                                          height: playerSize))
                 }
 
                 for enemy in engine.enemies {
@@ -57,13 +60,16 @@ struct OrbitDodge: View {
                         x: center.x + cos(enemy.angle) * enemy.distance,
                         y: center.y + sin(enemy.angle) * enemy.distance
                     )
-                    
+
                     context.drawLayer { subContext in
                         subContext.translateBy(x: ePos.x, y: ePos.y)
                         subContext.rotate(by: Angle(radians: enemy.angle + .pi/2))
-                        
-                        let s = engine.enemySize
-                        subContext.draw(enemyImg, in: CGRect(x: -s/2, y: -s/2, width: s, height: s))
+
+                        let enemySize = engine.enemySize
+                        subContext.draw(enemyImg, in: CGRect(x: -enemySize/2,
+                                                             y: -enemySize/2,
+                                                             width: enemySize,
+                                                             height: enemySize))
                     }
                 }
             }
@@ -72,7 +78,7 @@ struct OrbitDodge: View {
             } action: { newSize in
                 engine.canvasSize = newSize
             }
-            
+
             // MARK: - Stats HUD UI Layers
             VStack {
                 HStack {
@@ -97,8 +103,4 @@ struct OrbitDodge: View {
             }
         }
     }
-}
-
-#Preview {
-    OrbitDodge()
 }

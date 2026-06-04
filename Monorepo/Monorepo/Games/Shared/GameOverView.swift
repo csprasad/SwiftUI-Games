@@ -15,7 +15,7 @@ internal import Combine
 struct GameOverView: View {
     let state: GameState
     @State private var isVisible = true
-    
+
     var body: some View {
         VStack(spacing: 6) {
             if state == .gameOver {
@@ -24,7 +24,7 @@ struct GameOverView: View {
                     .foregroundStyle(ThemeGradient.accentVertical)
                     .opacity(isVisible ? 1 : 0)
             }
-            
+
             Text(state == .idle ? "TAP TO START" : "TAP TO RESTART")
                 .font(.retroGameHeadline)
                 .foregroundStyle(.primary.opacity(0.6))
@@ -40,7 +40,6 @@ struct GameOverView: View {
         .glassEffect(.clear, in: Rectangle())
     }
 }
-
 
 #Preview {
     GameOverView(state: .gameOver)

@@ -17,7 +17,6 @@ struct TrackballView: View {
     @State private var feedbackTrigger: Int = 0
     let onFirstMove: () -> Void
 
-    
     var body: some View {
         // Simple "Socket" background
         Circle()
@@ -47,23 +46,23 @@ struct TrackballView: View {
                     }
             )
     }
-    
+
     private func updateDirection(from translation: CGSize) {
         guard engine.state == .playing else { return }
 
         if engine.state == .idle || engine.state == .gameOver {
             onFirstMove()
         }
-        
+
         let oldDirection = engine.currentDirection
-        
+
         let proposed: Direction = abs(translation.width) > abs(translation.height)
             ? (translation.width > 0 ? .right : .left)
             : (translation.height > 0 ? .down : .up)
-        
+
         let opposites: [Direction: Direction] = [.up: .down, .down: .up, .left: .right, .right: .left]
         guard opposites[oldDirection] != proposed else { return }
-        
+
         engine.currentDirection = proposed
         if oldDirection != engine.currentDirection {
             feedbackTrigger += 1

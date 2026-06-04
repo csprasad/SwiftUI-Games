@@ -13,12 +13,12 @@ import SwiftUI
 struct CommitSnakeGame: View {
     @State private var engine = CommitSnakeEngine()
     @State private var gameLoopID = 0
-    
+
     var body: some View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
                 Spacer().frame(height: 50)
-                
+
                 CommitGridView(engine: engine)
                     .layoutPriority(1)
                     .overlay(alignment: engine.state == .idle ? .bottom : .top) {
@@ -30,12 +30,12 @@ struct CommitSnakeGame: View {
                     .onTapGesture {
                         handleTrigger()
                     }
-                
+
                 TrackballView(engine: engine, onFirstMove: handleTrigger)
                     .frame(height: 100)
                     .padding(.bottom, 20)
             }
-            
+
             GlassEffectContainer {
                 HStack {
                     Text("COMMITS")
@@ -66,7 +66,7 @@ struct CommitSnakeGame: View {
             }
         }
     }
-    
+
     private func handleTrigger() {
         if engine.state == .idle {
             engine.handleButtonTap()

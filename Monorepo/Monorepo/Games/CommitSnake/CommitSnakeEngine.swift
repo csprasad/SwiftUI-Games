@@ -10,20 +10,22 @@
 
 import SwiftUI
 
+// swiftlint:disable identifier_name
 enum Direction {
     case up, down, left, right
 }
+// swiftlint:enable identifier_name
 
 @Observable @MainActor
 final class CommitSnakeEngine {
     let columns = 25
     let rows = 30
-    
+
     var snakeBody: [Int] = [45, 44, 43]
     var foodPosition: Int = 100
     var currentDirection: Direction = .right
     var state: GameState = .idle
-    
+
     func handleButtonTap() {
         switch state {
         case .idle:
@@ -35,13 +37,13 @@ final class CommitSnakeEngine {
             break
         }
     }
-    
+
     func move() {
         guard state == .playing else { return }
-        
+
         let head = snakeBody[0]
         var newHead = head
-        
+
         switch currentDirection {
         case .up:
             newHead = head - columns
@@ -54,14 +56,14 @@ final class CommitSnakeEngine {
         case .right:
             newHead = (head % columns == columns - 1) ? head - (columns - 1) : head + 1
         }
-        
+
         if snakeBody.contains(newHead) {
             state = .gameOver
             return
         }
-        
+
         snakeBody.insert(newHead, at: 0)
-        
+
         if newHead == foodPosition {
             if snakeBody.count == columns * rows {
                 state = .gameOver
@@ -72,13 +74,13 @@ final class CommitSnakeEngine {
             snakeBody.removeLast()
         }
     }
-    
+
     private func resetGame() {
         snakeBody = [45, 44, 43]
         foodPosition = 100
         currentDirection = .right
     }
-    
+
     private func spawnFood() {
         let occupied = Set(snakeBody)
         var candidate: Int
