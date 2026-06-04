@@ -64,7 +64,9 @@ final class CommitSnakeEngine {
             newHead = (head % columns == columns - 1) ? head - (columns - 1) : head + 1
         }
 
-        if snakeBody.contains(newHead) {
+        // When not eating, exclude tail from collision check since it will be removed
+        let collisionBody = (newHead == foodPosition) ? snakeBody : snakeBody.dropLast()
+        if collisionBody.contains(newHead) {
             state = .gameOver
             return
         }
