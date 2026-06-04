@@ -94,7 +94,10 @@ final class DinoEngine {
 
         velocity += gravity
         dinoYOffset += velocity
-        if dinoYOffset >= 0 { dinoYOffset = 0 }
+        if dinoYOffset >= 0 {
+            dinoYOffset = 0
+            velocity = 0
+        }
 
         let currentMoveSpeed = baseSpeed * speedMultiplier
         bgOffset += CGFloat(currentMoveSpeed)

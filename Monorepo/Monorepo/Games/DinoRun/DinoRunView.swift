@@ -85,8 +85,23 @@ struct DinoRunView: View {
 }
 
 private struct Stone: Identifiable {
-    let id = UUID()
-    let x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat
+    let id: Int
+    let x: CGFloat
+    let y: CGFloat
+    let width: CGFloat
+    let height: CGFloat
+}
+
+private let groundStones: [Stone] = (0..<60).map { index in
+    let seed = CGFloat(index * 137 + 42)
+
+    return Stone(
+        id: index,
+        x: seed * 23,
+        y: (seed * 7).truncatingRemainder(dividingBy: 8),
+        width: (seed * 3).truncatingRemainder(dividingBy: 6) + 2,
+        height: (seed * 5).truncatingRemainder(dividingBy: 3) + 1
+    )
 }
 
 /// Renders the ground strip used by the game, including a top baseline and a horizontally scrolling field of small stones.
@@ -102,17 +117,8 @@ private func dinoGround(offset: CGFloat) -> some View {
         // Scrolling stones
         GeometryReader { geo in
             let totalWidth = geo.size.width
-            let stones: [Stone] = (0..<60).map { i in
-                let seed = CGFloat(i * 137 + 42)
-                return Stone(
-                        x: (seed * 23).truncatingRemainder(dividingBy: totalWidth),
-                        y: (seed * 7).truncatingRemainder(dividingBy: 8),
-                        width: (seed * 3).truncatingRemainder(dividingBy: 6) + 2,
-                        height: (seed * 5).truncatingRemainder(dividingBy: 3) + 1
-                    )
-            }
 
-            ForEach(stones) { stone in
+            ForEach(groundStones) { stone in
                 let scrolledX = (stone.x + offset)
                     .truncatingRemainder(dividingBy: totalWidth)
 
@@ -121,14 +127,22 @@ private func dinoGround(offset: CGFloat) -> some View {
                     : scrolledX
 
                 RoundedRectangle(cornerRadius: 1)
-                    .fill(.primary.opacity(
-                        Double(
-                            (stone.width * 13)
-                                .truncatingRemainder(dividingBy: 4) + 1
-                        ) * 0.08
-                    ))
-                    .frame(width: stone.width, height: stone.height)
-                    .position(x: finalX, y: stone.y + 4)
+                    .fill(
+                        .primary.opacity(
+                            Double(
+                                (stone.width * 13)
+                                    .truncatingRemainder(dividingBy: 4) + 1
+                            ) * 0.08
+                        )
+                    )
+                    .frame(
+                        width: stone.width,
+                        height: stone.height
+                    )
+                    .position(
+                        x: finalX,
+                        y: stone.y + 4
+                    )
             }
         }
         .frame(height: 14)
